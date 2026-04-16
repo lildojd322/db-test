@@ -24,6 +24,33 @@ export async function fetchPostFromDBById(id) {
     return rows[0]
 }
 
+export async function fetchCountPostFromDB() {
+    const connection = await mysql.createConnection({
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME
+    })
+    const [rows] = await connection.execute('SELECT COUNT(*) AS count FROM posts ')
+    await connection.end()
+    return rows[0].count
+}
+
+
+
+export async function fetchCountPostFromDBByKeyword(keyword) {
+    const connection = await mysql.createConnection({
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME
+    })
+    const [rows] = await connection.execute('SELECT COUNT(*) AS count FROM posts WHERE title LIKE ?',
+        [`%${keyword}%`])
+    await connection.end()
+    return rows[0].count
+}
+
 export async function getPostsFromDBByKeyword(keyword) {
     const connection = await mysql.createConnection({
         host: process.env.DB_HOST,

@@ -384,6 +384,7 @@ header nav {
   max-width: 1200px;
   margin: 0 auto;
 }
+
 header nav a {
   color: var(--foreground);
   text-decoration: none;
@@ -428,40 +429,44 @@ header nav a.active {
 }
 
 .search-form {
-    margin: 2rem 0;
-    display: flex;
-    gap: 1rem;
-    max-width: 500px;
+  margin: 2rem 0;
+  display: flex;
+  gap: 1rem;
+  max-width: 500px;
 }
 
 .search-input {
-    flex: 1;
-    padding: 0.75rem 1rem;
-    border: 2px solid var(--border);
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
-    outline: none;
-    background: var(--card-bg);
-    color: var(--foreground);
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  outline: none;
+  background: var(--card-bg);
+  color: var(--foreground);
 }
 
 .search-input:focus {
-    border-color: var(--primary);
+  border-color: var(--primary);
 }
 
 .search-button {
-    padding: 0.75rem 1.5rem;
-    background: var(--primary);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.3s ease;
+  padding: 0.75rem 1.5rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
 }
 
 .search-button:hover {
-    background: var(--primary-hover);
+  background: var(--primary-hover);
+}
+
+.info-word {
+  margin-bottom: 20px;
 }

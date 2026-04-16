@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { fetchPostsFromDB, getPostsFromDBByKeyword } from '../../lib/db'
+import { fetchPostsFromDB, getPostsFromDBByKeyword, fetchCountPostFromDB, fetchCountPostFromDBByKeyword } from '../../lib/db'
 import SearchPost from '../../components/SearchPost'
 
 
@@ -8,21 +8,24 @@ export const metadata = {
 }
 
 const Blog = async ({ searchParams }) => {
+
     const { search = '' } = await searchParams
     const keyword = search
-    await new Promise(resolve => setTimeout(resolve, 500));
+
     const posts = keyword ? await getPostsFromDBByKeyword(keyword) : await fetchPostsFromDB()
-
-
+    const countPosts = keyword ? await fetchCountPostFromDBByKeyword(keyword) : await fetchCountPostFromDB()
+    const infoWord = keyword ? 'posts found:' : 'total posts: '
 
     return (
         <div className='blog-container'>
             <h1>BLOG</h1>
+
             <SearchPost />
+            <h2 className='info-word'>  {infoWord} {countPosts} </h2>
 
 
             <ul className="posts-list">
-                {posts.length > 1 ? posts.map((post) => (
+                {posts.length > 0 ? posts.map((post) => (
                     <li key={post.id}>
                         <Link href={`/blog/${post.id}`}>
                             {post.title}

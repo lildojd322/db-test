@@ -23,12 +23,12 @@ const SearchPost = () => {
 
     return (
         <form onSubmit={handleSubmit} className="search-form">
-            <input 
-                className="search-input" 
-                placeholder="Search posts..." 
-                onChange={(e) => setSearchTerm(e.target.value)} 
-                type="text" 
-                value={searchTerm} 
+            <input
+                className="search-input"
+                placeholder="Search posts..."
+                onChange={(e) => setSearchTerm(e.target.value)}
+                type="text"
+                value={searchTerm}
             />
             <button type="submit" className="search-button">Search</button>
         </form>
