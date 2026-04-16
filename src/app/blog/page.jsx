@@ -1,7 +1,7 @@
-import Link from 'next/link'
+
 import { fetchPostsFromDB, getPostsFromDBByKeyword, fetchCountPostFromDB, fetchCountPostFromDBByKeyword } from '../../lib/db'
 import SearchPost from '../../components/SearchPost'
-
+import PostsList from '../../components/PostsList'
 
 export const metadata = {
     title: "blog",
@@ -22,19 +22,7 @@ const Blog = async ({ searchParams }) => {
 
             <SearchPost />
             <h2 className='info-word'>  {infoWord} {countPosts} </h2>
-
-
-            <ul className="posts-list">
-                {posts.length > 0 ? posts.map((post) => (
-                    <li key={post.id}>
-                        <Link href={`/blog/${post.id}`}>
-                            {post.title}
-                        </Link>
-                        <div>{post.body}</div>
-                    </li>
-                )) : <h1>posts not found</h1>}
-
-            </ul>
+            <PostsList initialPosts={posts} keyword={keyword} />
         </div>
     )
 }
