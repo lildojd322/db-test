@@ -20,8 +20,8 @@ const PostsList = (props) => {
     }, [keyword, initialPosts])
 
     const loadMore = async () => {
-        const res = await fetch(`/blog?loadMore=true&offset=${offset}&keyword=${keyword}`)
-        const newPosts = await res.json()
+        const res = await fetch(`/api/posts?offset=${offset}&limit=20`);
+        const newPosts = await res.json();
         if (newPosts.length < 20) setHasMore(false)
         setPosts([...posts, ...newPosts])
         setOffset(prev => prev + 20)
@@ -42,7 +42,7 @@ const PostsList = (props) => {
         </ul>
             {hasMore && (
                 <button className="load-more-btn" onClick={loadMore} className="load-more-btn" disabled={loading}>
-                    {loading ? 'Загрузка...' : 'Показать еще'}
+                    {loading ? 'Loading...' : 'show more'}
                 </button>
             )}
         </>
