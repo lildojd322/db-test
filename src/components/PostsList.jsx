@@ -14,14 +14,18 @@ const PostsList = (props) => {
     useEffect(() => {
 
         setPosts(initialPosts)
-        setOffset(20)
+        setOffset(initialPosts.length)
         setHasMore(initialPosts.length >= 20)
 
-    }, [keyword, initialPosts])
+    }, [initialPosts])
 
     const loadMore = async () => {
-        const res = await fetch(`/api/posts?offset=${offset}&limit=20`);
-        const newPosts = await res.json();
+
+        const res = await fetch(
+            keyword ? `/api/posts?offset=${offset}&limit=20&keyword=${encodeURIComponent(keyword)}`
+                : `/api/posts?offset=${offset}&limit=20`
+        )
+        const newPosts = await res.json()
         if (newPosts.length < 20) setHasMore(false)
         setPosts([...posts, ...newPosts])
         setOffset(prev => prev + 20)
