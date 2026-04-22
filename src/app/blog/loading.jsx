@@ -5,7 +5,7 @@ const LoadingPosts = () => {
         <div className="blog-container">
             <h1>BLOG</h1>
             <SearchPost />
-            {[1, 2, 3, 4].map((i) => (
+            {[1, 2, 3, 4, 5, 6].map((i) => (
                 <div key={i} className="post-skeleton">
                     <div className="skeleton-title"></div>
                     <div className="skeleton-line"></div>

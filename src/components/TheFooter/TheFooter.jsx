@@ -1,10 +1,10 @@
-
-
+import styles from './TheFooter.module.scss'
 
 const TheFooter = () => {
     return (
-        <footer>
-            <p>© 2026 My blog. All rights reserved.</p>
+        <footer className={styles.footer}>
+            <p className={styles.text}>© 2024 My Blog</p>
+          
         </footer>
     )
 }
