@@ -1,6 +1,9 @@
-import Link from 'next/link'
-import Navigation from './Navigation'
-import { getLinksFromDB } from '../lib/db'
+
+
+
+import Navigation from '..//Navigation/Navigation'
+import { getLinksFromDB } from '../../lib/db'
+import SwitchTheme from '@/components/SwitchTheme/SwitchTheme'
 
 
 
@@ -11,7 +14,7 @@ const TheHeader = async () => {
     return (
         <header>
             <Navigation navLinks={navItems} />
-
+            <SwitchTheme />
         </header>
     )
 }

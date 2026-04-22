@@ -1,0 +1,39 @@
+
+.searchForm {
+  margin: 2rem 0;
+  display: flex;
+  gap: 1rem;
+  max-width: 500px;
+}
+
+.searchInput {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  outline: none;
+  background: var(--card-bg);
+  color: var(--foreground);
+}
+
+.searchInput:focus {
+  border-color: var(--primary);
+}
+
+.searchButton {
+  padding: 0.75rem 1.5rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.searchButton:hover {
+  background: var(--primary-hover);
+}

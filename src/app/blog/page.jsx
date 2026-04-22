@@ -1,7 +1,7 @@
 
 import { fetchPostsFromDB, getPostsFromDBByKeyword, fetchCountPostFromDB, fetchCountPostFromDBByKeyword } from '../../lib/db'
-import SearchPost from '../../components/SearchPost'
-import PostsList from '../../components/PostsList'
+import SearchPost from '../../components/SearchPost/SearchPost'
+import PostsList from '../../components/PostsList/PostsList'
 
 export const metadata = {
     title: "blog",

@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-
+import styles from './PostsList.module.scss'
 
 const PostsList = (props) => {
     const { initialPosts, keyword } = props
@@ -33,7 +33,7 @@ const PostsList = (props) => {
     }
 
     return (
-        <>   <ul className="posts-list">
+        <>   <ul className={styles.postsList}>
             {posts.length > 0 ? posts.map((post) => (
                 <li key={post.id}>
                     <Link href={`/blog/${post.id}`}>
@@ -45,7 +45,7 @@ const PostsList = (props) => {
 
         </ul>
             {hasMore && (
-                <button className="load-more-btn" onClick={loadMore} className="load-more-btn" disabled={loading}>
+                <button className={styles.loadMoreBtn} onClick={loadMore}  disabled={loading}>
                     {loading ? 'Loading...' : 'show more'}
                 </button>
             )}

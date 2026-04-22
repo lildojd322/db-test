@@ -1,6 +1,6 @@
     import mysql from 'mysql2/promise'
 
-
+// posts
 
     export async function fetchPostsFromDB(limit = 20, offset = 0) {
         const connection = await mysql.createConnection({
@@ -68,6 +68,8 @@
         return rows
     }
 
+
+// links
     export async function getLinksFromDB() {
         const connection = await mysql.createConnection({
             host: process.env.DB_HOST,

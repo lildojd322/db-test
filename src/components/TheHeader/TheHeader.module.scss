@@ -1,0 +1,90 @@
+header {
+    width: 100%;
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 0;
+    margin-bottom: 2rem;
+}
+
+header nav {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+}
+
+header nav a {
+    color: var(--foreground);
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.2s;
+}
+
+header nav a:hover {
+    color: var(--primary);
+}
+
+
+header {
+  width: 100%;
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  background-color: rgba(var(--card-bg-rgb, 255, 255, 255), 0.9);
+}
+
+
+header nav {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+header nav a {
+  color: var(--foreground);
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+header nav a:hover {
+  color: var(--primary);
+  background-color: rgba(59, 130, 246, 0.1);
+  text-decoration: none;
+}
+
+header nav a.active {
+  color: var(--primary);
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+
+@media (prefers-color-scheme: dark) {
+  header {
+    background-color: rgba(10, 10, 10, 0.9);
+  }
+}
+
+@media (max-width: 768px) {
+  header {
+    padding: 0.75rem 1rem;
+  }
+
+  header nav {
+    gap: 0.5rem;
+  }
+
+  header nav a {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+  }
+}

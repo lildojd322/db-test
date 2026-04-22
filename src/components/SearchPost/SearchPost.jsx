@@ -1,6 +1,8 @@
 'use client'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState, useEffect } from "react"
+import styles from './SearchPost.module.scss'
+
 
 const SearchPost = () => {
     const [searchTerm, setSearchTerm] = useState('')
@@ -22,15 +24,15 @@ const SearchPost = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="search-form">
+        <form onSubmit={handleSubmit} className={styles.searchForm}>
             <input
-                className="search-input"
+                className={styles.searchInput}
                 placeholder="Search posts..."
                 onChange={(e) => setSearchTerm(e.target.value)}
                 type="text"
                 value={searchTerm}
             />
-            <button type="submit" className="search-button">Search</button>
+            <button type="submit" className={styles.searchButton}>Search</button>
         </form>
     )
 }

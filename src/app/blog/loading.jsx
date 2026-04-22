@@ -1,4 +1,4 @@
-import SearchPost from "../../components/SearchPost"
+import SearchPost from "../../components/SearchPost/SearchPost"
 
 const LoadingPosts = () => {
     return (
