@@ -20,7 +20,7 @@ const SwitchTheme = () => {
         const newTheme = theme === 'dark' ? 'light' : 'dark'
         document.cookie = `theme=${newTheme}; path=/`
         setTheme(newTheme)
-       document.documentElement.setAttribute('data-theme', newTheme);
+        document.documentElement.setAttribute('data-theme', newTheme);
     }
     return (
         <div className={styles.toggleSwitch} >
