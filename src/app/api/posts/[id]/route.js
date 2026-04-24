@@ -1,10 +1,10 @@
 import { deletePostById } from "@/lib/db"
 import { NextResponse } from "next/server"
 
-export async function DELETE(request) {
+export async function DELETE(request, {params}) {
 
-    const { searchParams } = new URL(request.url)
-    const id = Number(searchParams.get("id") || "")
+    const { id } = await params
+    const postId = Number(id)
     let result
     try {
         if (id && !isNaN(id) && id > 0) {
@@ -25,7 +25,7 @@ export async function DELETE(request) {
             return NextResponse.json({ error: "Неверный ID" }, { status: 400 })
         }
 
-     
+
 
     } catch (error) {
         return NextResponse.json({ error: "Ошибка БД" }, { status: 500 })
