@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { cookies } from "next/headers";
 
-
+import { Providers } from '@/components/Providers/Providers'
 import TheFooter from '@/components/TheFooter/TheFooter'
 import TheHeader from '@/components/TheHeader/TheHeader'
 
@@ -43,10 +43,11 @@ export default async function RootLayout({
     >
 
       <body className="min-h-full flex flex-col">
-        <TheHeader />
-        {children}
-        <TheFooter />
-
+        <Providers>
+          <TheHeader />
+          {children}
+          <TheFooter />
+        </Providers>
       </body>
     </html>
   );

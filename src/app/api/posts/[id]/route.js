@@ -1,7 +1,7 @@
 import { deletePostById } from "@/lib/db"
 import { NextResponse } from "next/server"
 
-export async function DELETE(request, {params}) {
+export async function DELETE(request, { params }) {
 
     const { id } = await params
     const postId = Number(id)
