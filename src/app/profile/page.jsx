@@ -1,5 +1,5 @@
 'use client'
-import { useSession } from "next-auth/react"
+import { useSession, signOut } from "next-auth/react"
 import Profile from "../../components/Profile/Profile"
 
 const profile = () => {
@@ -8,7 +8,7 @@ const profile = () => {
 
 
     return (
-        <Profile session={session} />
+        <Profile signOut={signOut} session={session} />
     )
 }
 

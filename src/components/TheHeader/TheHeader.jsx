@@ -1,8 +1,9 @@
 
 import Navigation from '../Navigation/Navigation'
 import { getLinksFromDB } from '../../lib/db'
-import SwitchTheme from '@/components/SwitchTheme/SwitchTheme'
 import styles from './TheHeader.module.scss'
+import SwitchTheme from '@/components/SwitchTheme/SwitchTheme'
+
 
 const TheHeader = async () => {
     const navItems = await getLinksFromDB()
@@ -10,7 +11,7 @@ const TheHeader = async () => {
     return (
         <header className={styles.header}>  
             <Navigation  navLinks={navItems} />
-            <SwitchTheme />
+               <SwitchTheme />
         </header>
     )
 }

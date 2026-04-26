@@ -5,9 +5,10 @@
     padding: 1rem 2rem;
     position: sticky;
     top: 0;
+    margin-inline: auto;
     z-index: 10;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     backdrop-filter: blur(10px);
     margin-bottom: 2rem;
