@@ -1,6 +1,14 @@
+'use client'
+
+import { useSession, signOut } from "next-auth/react"
+
 import styles from './Profile.module.scss'
 
-const Profile = ({ session, signOut }) => {
+const Profile = () => {
+    const session = useSession()
+
+
+
     return (
         <div className={styles.profileContainer}>
             {session?.data?.user ? (
