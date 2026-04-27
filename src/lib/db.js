@@ -82,7 +82,7 @@ export async function deletePostById(id) {
 }
 
 
-// links
+// links        
 export async function getLinksFromDB() {
     const connection = await mysql.createConnection({
         host: process.env.DB_HOST,
@@ -93,4 +93,30 @@ export async function getLinksFromDB() {
     const [rows] = await connection.execute('SELECT * FROM links ')
     await connection.end()
     return rows
+}
+
+// users
+
+export async function getUsersFromDB() {
+    const connection = await mysql.createConnection({
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: 'users'
+    })
+    const [rows] = await connection.execute('SELECT * FROM users ')
+    await connection.end()
+    return rows
+}
+
+export async function getUserFromDBByEmail(email) {
+    const connection = await mysql.createConnection({
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: 'users'
+    })
+    const [rows] = await connection.execute('SELECT * FROM users WHERE email = ? ', [email])
+    await connection.end()
+    return rows[0]
 }

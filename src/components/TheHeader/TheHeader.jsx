@@ -7,11 +7,11 @@ import SwitchTheme from '@/components/SwitchTheme/SwitchTheme'
 
 const TheHeader = async () => {
     const navItems = await getLinksFromDB()
-    
+
     return (
-        <header className={styles.header}>  
-            <Navigation  navLinks={navItems} />
-               <SwitchTheme />
+        <header className={styles.header}>
+            <Navigation navLinks={navItems} />
+            <SwitchTheme />
         </header>
     )
 }
