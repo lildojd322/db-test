@@ -30,8 +30,8 @@ export const authConfig: AuthOptions = {
         })
 
     ],
-  /*   pages: {
+     pages: {
         signIn: '/signin',
-    }, */
+    },    
 }
 

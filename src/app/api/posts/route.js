@@ -18,7 +18,7 @@ export async function GET(request) {
 
         }
         return NextResponse.json(posts)
-
+        
     } catch (error) {
         return NextResponse.json({ error: "Ошибка БД" }, { status: 500 })
     }
