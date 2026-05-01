@@ -1,13 +1,22 @@
+import Link from "next/link"
 import GoogleButton from "../../components/GoogleButton/GoogleButton"
 import SignInForm from '../../components/SigninForm/SignInForm'
 const Signin = () => {
     return (
-        <div  >
+        <div className="authorizeContainer" >
             <GoogleButton />
             <div >
-                <span >or sign in with email</span>
+                <p className="signOr">or sign in with email</p>
             </div>
             <SignInForm />
+            <div className="authFooter">
+                <p>
+                    Don't have an account?   <Link href='/register'>Register right now</Link>
+                </p>
+            </div>
+
+
+
         </div>
     )
 }

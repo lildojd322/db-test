@@ -2,6 +2,8 @@ import type { AuthOptions, User } from "next-auth";
 import GoogleProvider from 'next-auth/providers/google'
 import Credentials from "next-auth/providers/credentials";
 import { getUserFromDBByEmail } from '@/lib/db'
+import { compare } from 'bcryptjs'
+
 
 export const authConfig: AuthOptions = {
     providers: [
@@ -18,11 +20,17 @@ export const authConfig: AuthOptions = {
 
                 if (!credentials?.email || !credentials.password) return null
                 const currentUser = await getUserFromDBByEmail(credentials?.email)
+                
+                if (currentUser && currentUser.password) {
+                    const isPasswordCorrect = await compare(
+                        credentials.password,
+                        currentUser.password
+                    )
 
-                if (currentUser && currentUser.password === credentials.password) {
-                    const { password, ...userWithoutPass } = currentUser
-
-                    return userWithoutPass as User
+                    if (isPasswordCorrect) {
+                        const { password, ...userWithoutPass } = currentUser
+                        return userWithoutPass as User
+                    }
                 }
 
                 return null

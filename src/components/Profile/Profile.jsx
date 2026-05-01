@@ -4,11 +4,12 @@ import { useSession, signOut } from "next-auth/react"
 import Image from "next/image"
 import styles from './Profile.module.scss'
 import getHighResImage from '../../hooks/getHighResImage'
+import defaultImage from '../../icons/png-transparent-default-avatar-thumbnail.png'
 
 const Profile = () => {
     const session = useSession()
 
-const userImage = session?.data?.user?.image
+    const userImage = session?.data?.user?.image || defaultImage.src
 
 
 
