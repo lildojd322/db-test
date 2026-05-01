@@ -1,4 +1,7 @@
 import mysql from 'mysql2/promise'
+import { hash } from 'bcryptjs'
+
+
 
 // posts
 
@@ -119,4 +122,24 @@ export async function getUserFromDBByEmail(email) {
     const [rows] = await connection.execute('SELECT * FROM users WHERE email = ? ', [email])
     await connection.end()
     return rows[0]
+}
+
+
+export async function forwardUserToDB(email, password, name) {
+
+    const hashedPassword = await hash(password, 10);
+
+    const connection = await mysql.createConnection({
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: 'users'
+    })
+    const [rows] = await connection.execute(
+        'INSERT INTO users (email, password, name) VALUES (?, ?, ?)',
+        [email, hashedPassword, name]
+    )
+
+    await connection.end();
+    return { success: true }
 }

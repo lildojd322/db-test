@@ -12,7 +12,7 @@ export async function DELETE(request, { params }) {
             result = await deletePostById(id)
 
             if (!result || result.affectedRows === 0) {
-                return NextResponse.json({ error: "Пост не найден" }, { status: 404 })
+                return NextResponse.json({ error: "post not found" }, { status: 404 })
             }
 
             return NextResponse.json({
@@ -22,12 +22,12 @@ export async function DELETE(request, { params }) {
             })
 
         } else {
-            return NextResponse.json({ error: "Неверный ID" }, { status: 400 })
+            return NextResponse.json({ error: "incorrect ID" }, { status: 400 })
         }
 
 
 
     } catch (error) {
-        return NextResponse.json({ error: "Ошибка БД" }, { status: 500 })
+        return NextResponse.json({ error: "db error" }, { status: 500 })
     }
 }   
