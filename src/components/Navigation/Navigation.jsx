@@ -3,13 +3,16 @@ import Link from "next/link"
 import { usePathname } from 'next/navigation'
 import styles from './Navigation.module.scss'
 import { useSession } from "next-auth/react"
-
+import Image from "next/image"
+import getHighResImage from '../../hooks/getHighResImage'
 
 
 const Navigation = ({ navLinks }) => {
     const pathname = usePathname()
     const session = useSession()
-    console.log(session)
+
+    const userImage = session?.data?.user?.image
+
     return (
         <>
             <div className={styles.leftSection}>
@@ -31,13 +34,16 @@ const Navigation = ({ navLinks }) => {
 
                 {session.status === 'authenticated' && session?.data?.user && (
                     <Link style={{
-                         marginRight: '20px',
+                        marginRight: '20px',
                         height: '32px',
                         width: '32px'
                     }} href="/profile">
-                        <img className={styles.userAvatar}
-                            src={session.data.user.image}
+                        <Image className={styles.userAvatar}
+                            src={getHighResImage(userImage)}
                             alt="avatar"
+                            width={32}
+                            height={32}
+
                             style={{ width: 32, height: 32, borderRadius: '50%' }}
                         />
                     </Link>
