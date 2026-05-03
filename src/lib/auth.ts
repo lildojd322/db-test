@@ -3,7 +3,7 @@ import GoogleProvider from 'next-auth/providers/google'
 import Credentials from "next-auth/providers/credentials";
 import { getUserFromDBByEmail } from '@/lib/db'
 import { compare } from 'bcryptjs'
-
+import { loginSchema } from '@/lib/zod'
 
 export const authConfig: AuthOptions = {
     providers: [
@@ -17,13 +17,18 @@ export const authConfig: AuthOptions = {
                 password: { label: 'password', type: 'password', required: true }
             },
             async authorize(credentials) {
+                const parsedCredentials = loginSchema.safeParse(credentials)
+                if (!parsedCredentials.success) {
+                    return null
+                }
+                const { email, password } = parsedCredentials.data
 
-                if (!credentials?.email || !credentials.password) return null
-                const currentUser = await getUserFromDBByEmail(credentials?.email)
-                
+
+                const currentUser = await getUserFromDBByEmail(email)
+
                 if (currentUser && currentUser.password) {
                     const isPasswordCorrect = await compare(
-                        credentials.password,
+                        password,
                         currentUser.password
                     )
 

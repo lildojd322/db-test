@@ -64,4 +64,4 @@ export async function forwardUserToDB(email, password, name) {
         [email, hashedPassword, name]
     )
     return { success: true }
-}
+}   

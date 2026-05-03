@@ -3,36 +3,35 @@ import styles from './RegisterForm.module.scss'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
-
+import { registerSchema } from "@/lib/zod"
 
 const RegisterForm = () => {
     const router = useRouter()
     const [error, setError] = useState('')
+
+
     const handleSubmit = async (event) => {
         event.preventDefault()
         setError('')
 
         const formData = new FormData(event.currentTarget)
+
         const data = Object.fromEntries(formData.entries())
 
-        if (data.password.length < 7) {
-            setError('password is too short')
-            return
-        }
-        if (data.password.length > 15) {
-            setError('password is too long')
+        const validation = registerSchema.safeParse(data)
+
+        if (!validation.success) {
+            const firstError = validation.error.issues[0].message
+            setError(firstError)
             return
         }
 
-        if (data.password !== data.repeatPassword) {
-            setError('the passwords dont match')
-            return
-        }
+
 
         const response = await fetch('/api/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
+            body: JSON.stringify(validation.data)
         })
 
         if (response.ok) {
@@ -48,16 +47,11 @@ const RegisterForm = () => {
         }
     }
 
-
-
-
-
-
     return (
         <>
             <h1 className={styles.h1}>Register account</h1>
             <form onSubmit={handleSubmit} className={styles.form}>
-                  {error && <div className={styles.error}>{error}</div>}
+                {error && <div className={styles.error}>{error}</div>}
                 <input
                     type="text"
                     name="name"

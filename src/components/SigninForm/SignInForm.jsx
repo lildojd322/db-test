@@ -3,6 +3,8 @@ import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import styles from './SignInForm.module.scss'
+import { loginSchema } from '@/lib/zod'
+
 
 const SignInForm = () => {
     const router = useRouter()
@@ -14,9 +16,20 @@ const SignInForm = () => {
 
         const formData = new FormData(event.currentTarget)
 
+        const data = Object.fromEntries(formData.entries())
+
+        const validation = loginSchema.safeParse(data)
+
+
+        if (!validation.success) {
+            setError(validation.error.issues[0].message)
+            return
+        }
+
+
         const response = await signIn('credentials', {
-            email: formData.get('email'),
-            password: formData.get('password'),
+            email: validation.data.email,
+            password: validation.data.password,
             redirect: false,
         })
 
