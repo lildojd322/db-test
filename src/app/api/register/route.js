@@ -30,7 +30,7 @@ export async function POST(request) {
             return NextResponse.json({ error: "Email already exists" }, { status: 400 })
         }
 
-      
+
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 })
     }
 }   

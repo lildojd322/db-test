@@ -20,6 +20,11 @@ export async function fetchPostFromDBById(id) {
     return rows[0]
 }
 
+export async function fetchRandomPostFromDB() {
+    const [rows] = await pool.execute('SELECT * FROM posts ORDER BY RAND() LIMIT 3')
+    return rows
+}
+
 export async function fetchCountPostFromDB() {
     const [rows] = await pool.execute('SELECT COUNT(*) AS count FROM posts ')
     return rows[0].count
