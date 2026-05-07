@@ -2,6 +2,8 @@
 import { fetchPostsFromDB, getPostsFromDBByKeyword, fetchCountPostFromDB, fetchCountPostFromDBByKeyword } from '../../lib/db'
 import SearchPost from '../../components/SearchPost/SearchPost'
 import PostsList from '../../components/PostsList/PostsList'
+import CreatePostButton from '../../components/CreatePostButton/CreatePostButton'
+
 
 export const metadata = {
     title: "blog",
@@ -22,7 +24,10 @@ const Blog = async ({ searchParams }) => {
             <h1>BLOG</h1>
 
             <SearchPost />
+            <CreatePostButton />
+
             <h2 className='info-word'>  {infoWord} {countPosts} </h2>
+
             <PostsList initialPosts={posts} keyword={keyword} />
         </div>
     )

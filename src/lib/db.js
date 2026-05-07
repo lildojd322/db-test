@@ -28,7 +28,7 @@ export async function fetchRandomPostFromDB() {
 export async function fetchCountPostFromDB() {
     const [rows] = await pool.execute('SELECT COUNT(*) AS count FROM posts ')
     return rows[0].count
-}   
+}
 
 export async function fetchCountPostFromDBByKeyword(keyword) {
     const [rows] = await pool.execute('SELECT COUNT(*) AS count FROM posts WHERE title LIKE ?', [`%${keyword}%`])
@@ -67,6 +67,15 @@ export async function forwardUserToDB(email, password, name) {
     await pool.execute(
         'INSERT INTO users (email, password, name) VALUES (?, ?, ?)',
         [email, hashedPassword, name]
+    )
+    return { success: true }
+}
+
+
+export async function forwardPostToDB(title, description) {
+    await pool.execute(
+        'INSERT INTO posts (title, body) VALUES (?, ?)',
+        [title, description]
     )
     return { success: true }
 }   

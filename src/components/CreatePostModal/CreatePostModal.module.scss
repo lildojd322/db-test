@@ -1,0 +1,90 @@
+.h1 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--foreground);
+  text-align: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  min-width: 300px;
+}
+
+
+.input, .textarea {
+  width: 100%;
+  padding: 12px;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--foreground);
+  font-size: 1rem;
+  transition: border-color 0.2s;
+  font-family: inherit;
+
+  &:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+}
+
+.textarea {
+  min-height: 120px;
+  resize: vertical; 
+  line-height: 1.5;
+}
+
+.submitButton {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 8px;
+}
+
+.submitButton:hover {
+  background-color: var(--primary-hover);
+}
+
+.error {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px); 
+}
+
+.modalContent {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+}

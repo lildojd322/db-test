@@ -32,6 +32,7 @@ const MainRandomPosts = () => {
                 setLoading(false)
             })
     }, [])
+    
     if (loading) {
         return <div>Loading posts...</div>
     }

@@ -1,4 +1,3 @@
-
 import Navigation from '../Navigation/Navigation'
 import { getLinksFromDB } from '../../lib/db'
 import styles from './TheHeader.module.scss'
