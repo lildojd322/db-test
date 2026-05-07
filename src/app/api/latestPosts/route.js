@@ -1,10 +1,10 @@
-import { fetchRandomPostFromDB } from '../../../lib/db'
+import { fetchLatestPostFromDB } from '../../../lib/db'
 
 import { NextResponse } from 'next/server'
 
 export async function GET(request) {
     try {
-        const posts = await fetchRandomPostFromDB()
+        const posts = await fetchLatestPostFromDB()
 
         return NextResponse.json({
             success: true,

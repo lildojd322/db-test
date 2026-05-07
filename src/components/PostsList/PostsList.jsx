@@ -33,22 +33,29 @@ const PostsList = (props) => {
     }
 
     return (
-        <>   <ul className={styles.postsList}>
-            {posts.length > 0 ? posts.map((post) => (
-                <li key={post.id}>
-                    <Link href={`/blog/${post.id}`}>
-                        {post.title}
-                    </Link>
-                    <div>{post.body}</div>
-                </li>
-            )) : <h1>posts not found</h1>}
+        <>
+            <ul className={styles.postsList}>
+                {posts.length > 0 ? posts.map((post) => (
+                    <li key={post.id} className={styles.postItem}> <div className={styles.title}>
+                        <Link href={`/blog/${post.id}`} className={styles.postLink}>
+                            {post.title}
+                        </Link></div>
+                        <div className={styles.postMeta}>
+                            <span className={styles.author}>{post.author_name}</span>
+                            <span className={styles.date}>
+                                {new Date(post.created_at).toLocaleDateString('en-EN')}
+                            </span>
+                        </div>
 
-        </ul>
+                    </li>
+                )) : <h1>posts not found</h1>}
+            </ul>
             {hasMore && (
-                <button className={styles.loadMoreBtn} onClick={loadMore}  disabled={loading}>
+                <button className={styles.loadMoreBtn} onClick={loadMore} disabled={loading}>
                     {loading ? 'Loading...' : 'show more'}
                 </button>
-            )}
+            )
+            }
         </>
     )
 }

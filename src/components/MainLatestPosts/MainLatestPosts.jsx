@@ -2,29 +2,22 @@
 import Link from 'next/link'
 import { useEffect, useState } from "react"
 
-import styles from './MainRandomPosts.module.scss'
+import styles from './MainLatestPosts.module.scss'
 
-const MainRandomPosts = () => {
+
+const MainLatestPosts = () => {
     const [posts, setPosts] = useState([])
     const [loading, setLoading] = useState(true)
 
-    
+
     useEffect(() => {
-        const savedPosts = sessionStorage.getItem('randomPosts')
 
-        if (savedPosts) {
 
-            setPosts(JSON.parse(savedPosts))
-            setLoading(false)
-            return  
-        }
-
-        fetch('/api/randomPosts')
+        fetch('/api/latestPosts')
             .then(res => res.json())
             .then(data => {
                 const fetchedPosts = data.data || []
                 setPosts(fetchedPosts)
-                sessionStorage.setItem('randomPosts', JSON.stringify(fetchedPosts))
                 setLoading(false)
             })
             .catch(err => {
@@ -32,7 +25,7 @@ const MainRandomPosts = () => {
                 setLoading(false)
             })
     }, [])
-    
+
     if (loading) {
         return <div>Loading posts...</div>
     }
@@ -49,6 +42,13 @@ const MainRandomPosts = () => {
                     <li key={post.id} className={styles.postCard}>
                         <Link href={`/blog/${post.id}`}>
                             <span>{post.title}</span>
+                            <div className={styles.postMeta}>
+                                <span className={styles.author}>{post.author_name}</span>
+                                <span className={styles.date}>
+                                    {new Date(post.created_at).toLocaleDateString('en-EN')}
+                                </span>
+                            </div>
+
                         </Link>
                     </li>
                 )
@@ -57,4 +57,4 @@ const MainRandomPosts = () => {
     )
 }
 
-export default MainRandomPosts
+export default MainLatestPosts

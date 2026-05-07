@@ -20,8 +20,8 @@ export async function fetchPostFromDBById(id) {
     return rows[0]
 }
 
-export async function fetchRandomPostFromDB() {
-    const [rows] = await pool.execute('SELECT * FROM posts ORDER BY RAND() LIMIT 3')
+export async function fetchLatestPostFromDB() {
+    const [rows] = await pool.execute('SELECT * FROM posts ORDER BY created_at DESC LIMIT 3')
     return rows
 }
 
@@ -72,10 +72,10 @@ export async function forwardUserToDB(email, password, name) {
 }
 
 
-export async function forwardPostToDB(title, description, email) {
+export async function forwardPostToDB(title, description, email, name) {
     await pool.execute(
-        'INSERT INTO posts (title, body, author_email) VALUES (?, ?, ?)',
-        [title, description, email]
+        'INSERT INTO posts (title, body, author_email, author_name) VALUES (?, ?, ?, ?)',
+        [title, description, email, name]
     )
     return { success: true }
 }   
