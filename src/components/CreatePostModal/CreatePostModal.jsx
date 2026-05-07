@@ -5,10 +5,12 @@ import { postSchema } from '../../lib/zod'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import styles from './CreatePostModal.module.scss'
+import { useSession } from "next-auth/react"
 
 const CreatePostModal = ({ isOpen, changeModalStatus }) => {
     const [error, setError] = useState(false)
     const router = useRouter();
+    const session = useSession()
 
     const handleOverlayClick = (e) => {
 
@@ -25,6 +27,7 @@ const CreatePostModal = ({ isOpen, changeModalStatus }) => {
         const formData = new FormData(event.currentTarget)
 
         const data = Object.fromEntries(formData.entries())
+
 
         const validation = postSchema.safeParse(data)
 

@@ -2,18 +2,25 @@ import { forwardPostToDB } from "@/lib/db"
 import { NextResponse } from "next/server"
 import { postSchema } from "@/lib/zod"
 import { z } from "zod"
-
+import { authConfig } from "@/lib/auth"
+import { getServerSession } from "next-auth/next"
 
 
 
 export const POST = async (request) => {
+    const session = await getServerSession(authConfig)
+    if (!session) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
     try {
+
+        const userEmail = session.user.email
         const body = await request.json()
         const { description, title } = postSchema.parse(body)
 
 
 
-        await forwardPostToDB(title, description)
+        await forwardPostToDB(title, description, userEmail)
         return NextResponse.json({
             message: "post created successfully",
             success: true

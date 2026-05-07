@@ -72,10 +72,10 @@ export async function forwardUserToDB(email, password, name) {
 }
 
 
-export async function forwardPostToDB(title, description) {
+export async function forwardPostToDB(title, description, email) {
     await pool.execute(
-        'INSERT INTO posts (title, body) VALUES (?, ?)',
-        [title, description]
+        'INSERT INTO posts (title, body, author_email) VALUES (?, ?, ?)',
+        [title, description, email]
     )
     return { success: true }
 }   

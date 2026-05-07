@@ -17,6 +17,7 @@ const CreatePostButton = () => {
     const changeModalStatus = () => {
         if (session.status === 'unauthenticated') {
             router.push('/signin')
+            return
         }
         if (isOpen === true) {
             setIsOpen(false)
