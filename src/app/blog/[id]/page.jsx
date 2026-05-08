@@ -1,5 +1,6 @@
 import { fetchPostFromDBById, fetchPostsFromDB, getUserFromDBByEmail } from '../../../lib/db'
 import defaultImage from '../../../icons/avat.jpeg'
+import Link from 'next/link'
 
 
 export async function generateMetadata({ params }) {
@@ -43,17 +44,20 @@ const Post = async ({ params }) => {
         <div className="post-container">
             <h1>{post.title}</h1>
             <p>{post.body}</p>
-            <div style={{
+            <Link href={`/user/${user.email}`} style={{
                 display: 'flex',
                 alignItems: 'center',
                 columnGap: '20px',
-                marginTop: '20px'
+                marginTop: '20px',
+                textDecoration: 'none',
+                color: 'inherit',
+                cursor: 'pointer'
             }}>
                 <pre style={{
                     marginTop: '10px'
                 }}> {authorName}</pre>
-                <img src={authorImage || defaultImage.src} style={{ width: '50px', height: '50px', borderRadius: '50%' }} alt="avatar" />
-            </div>
+                <img src={authorImage || defaultImage.src} style={{ width: '35px', height: '35px', borderRadius: '50%' }} alt="avatar" />
+            </Link>
             <pre style={{
                 marginTop: '50px'
             }}>created: {formattedDate}</pre>
