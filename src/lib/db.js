@@ -78,4 +78,12 @@ export async function forwardPostToDB(title, description, email, name) {
         [title, description, email, name]
     )
     return { success: true }
-}   
+}
+
+
+export async function createGoogleUserInDB({ name, email, image }) {
+    await pool.execute(
+        'INSERT INTO users (name, email, image, password) VALUES (?, ?, ?, NULL)',
+        [name, email, image]
+    )
+}

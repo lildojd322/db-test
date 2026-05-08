@@ -1,7 +1,7 @@
 import type { AuthOptions, User } from "next-auth";
 import GoogleProvider from 'next-auth/providers/google'
 import Credentials from "next-auth/providers/credentials";
-import { getUserFromDBByEmail } from '@/lib/db'
+import { getUserFromDBByEmail, createGoogleUserInDB } from '@/lib/db'
 import { compare } from 'bcryptjs'
 import { loginSchema } from '@/lib/zod'
 
@@ -46,5 +46,27 @@ export const authConfig: AuthOptions = {
     pages: {
         signIn: '/signin',
     },
+    callbacks: {
+        async signIn({ user, account }) {
+            if (account?.provider === "google") {
+                try {
+                    const currentUser = await getUserFromDBByEmail(user.email!)
+
+                    if (!currentUser) {
+                        await createGoogleUserInDB({
+                            name: user.name,
+                            email: user.email,
+                            image: user.image
+                        })
+                    }
+                } catch (error) {
+                    console.error("Error saving google user:", error)
+                    return true
+                }
+            }
+            return true
+        },
+    
+    }
 }
 

@@ -4,7 +4,7 @@ import { useSession, signOut } from "next-auth/react"
 import Image from "next/image"
 import styles from './Profile.module.scss'
 import getHighResImage from '../../hooks/getHighResImage'
-import defaultImage from '../../icons/png-transparent-default-avatar-thumbnail.png'
+import defaultImage from '../../icons/avat.jpeg'
 
 const Profile = () => {
     const session = useSession()
