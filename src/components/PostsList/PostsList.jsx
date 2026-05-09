@@ -2,42 +2,59 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import styles from './PostsList.module.scss'
-
+import { usePostStore } from '../../store/store'
 const PostsList = (props) => {
     const { initialPosts, keyword } = props
-    const [posts, setPosts] = useState(initialPosts)
-    const [offset, setOffset] = useState(20)
-    const [hasMore, setHasMore] = useState(posts.length > 20)
+    const {
+        storedPosts, setPosts,
+        storedOffset, setOffset,
+        storedHasMore, setHasMore,
+        storedKeyword, setKeyword,
+        reset
+    } = usePostStore()
+
+
     const [loading, setLoading] = useState(false)
 
 
     useEffect(() => {
+        if (keyword !== storedKeyword) {
+            reset()
+            setKeyword(keyword)
+            setPosts(initialPosts)
+            setOffset(initialPosts.length)
+            setHasMore(initialPosts.length >= 20)
+        }
+    }, [initialPosts, keyword])
 
-        setPosts(initialPosts)
-        setOffset(initialPosts.length)
-        setHasMore(initialPosts.length >= 20)
 
-    }, [initialPosts])
+    const currentPosts = storedPosts.length > 0 ? storedPosts : initialPosts
+    const currentOffset = storedPosts.length > 0 ? storedOffset : initialPosts.length
+    const currentHasMore = storedPosts.length > 0 ? storedHasMore : (initialPosts.length >= 20)
+
+  
+
 
     const loadMore = async () => {
 
         const res = await fetch(
-            keyword ? `/api/posts?offset=${offset}&limit=20&keyword=${encodeURIComponent(keyword)}`
-                : `/api/posts?offset=${offset}&limit=20`
+            keyword ? `/api/posts?offset=${currentOffset}&limit=20&keyword=${encodeURIComponent(keyword)}`
+                : `/api/posts?offset=${currentOffset}&limit=20`
         )
         const newPosts = await res.json()
         if (newPosts.length < 20) setHasMore(false)
-        setPosts([...posts, ...newPosts])
-        setOffset(prev => prev + 20)
+        setPosts([...currentPosts, ...newPosts])
+        setOffset(currentOffset + 20)
+
         setLoading(false)
     }
 
     return (
         <>
             <ul className={styles.postsList}>
-                {posts.length > 0 ? posts.map((post) => (
+                {currentPosts.length > 0 ? currentPosts.map((post) => (
                     <li key={post.id} className={styles.postItem}> <div className={styles.title}>
-                        <Link href={`/blog/${post.id}`} className={styles.postLink}>
+                        <Link scroll={false} href={`/blog/${post.id}`} className={styles.postLink}>
                             {post.title}
                         </Link></div>
                         <div className={styles.postMeta}>
@@ -50,7 +67,7 @@ const PostsList = (props) => {
                     </li>
                 )) : <h1>posts not found</h1>}
             </ul>
-            {hasMore && (
+            {currentHasMore  && (
                 <button className={styles.loadMoreBtn} onClick={loadMore} disabled={loading}>
                     {loading ? 'Loading...' : 'show more'}
                 </button>
