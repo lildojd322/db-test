@@ -44,7 +44,7 @@ const Post = async ({ params }) => {
         <div className="post-container">
             <h1>{post.title}</h1>
             <p>{post.body}</p>
-            <Link href={`/user/${btoa(user.email)}`} style={{
+            <Link href={`/user/${user.id}`} style={{
                 display: 'flex',
                 alignItems: 'center',
                 columnGap: '20px',

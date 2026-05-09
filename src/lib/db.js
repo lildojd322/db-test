@@ -62,6 +62,12 @@ export async function getUserFromDBByEmail(email) {
     return rows[0]
 }
 
+export async function getUserFromDBById(id) {
+    const [rows] = await pool.execute('SELECT * FROM users WHERE id = ? ', [id])
+    return rows[0]
+}
+
+
 export async function forwardUserToDB(email, password, name) {
     const hashedPassword = await hash(password, 10);
     await pool.execute(

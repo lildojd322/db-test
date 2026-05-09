@@ -1,5 +1,5 @@
 'use client'
-
+import LatestUserPosts from '../../components/LatestUserPosts/LatestUserPosts'
 import { useSession, signOut } from "next-auth/react"
 import Image from "next/image"
 import styles from './Profile.module.scss'
@@ -26,7 +26,10 @@ const Profile = () => {
             ) : 'create an account or sign in to an existing one'
 
             }
-
+            <h1 style={{ marginTop: '20px', marginBottom: '20px' }}>
+                {`${session?.data?.user?.name}'s`} latest posts
+            </h1>
+            <LatestUserPosts email={session?.data?.user?.email} />
         </div>
     )
 }
