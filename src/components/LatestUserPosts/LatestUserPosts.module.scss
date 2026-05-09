@@ -1,0 +1,48 @@
+.postItem {
+    width: 500px;
+    margin-block: 20px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    list-style: none; 
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow);
+
+    }
+
+    .title {
+        margin-bottom: 0.75rem;
+
+        .postLink {
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: var(--foreground);
+            text-decoration: none;
+            display: block;
+            line-height: 1.4;
+            transition: color 0.2s;
+
+      
+        }
+    }
+
+    .postMeta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        margin-top: 10px;
+        padding-top: 12px;
+        color: var(--foreground);
+        opacity: 0.6;
+
+        .date {
+            font-size: 0.95rem;
+            font-variant-numeric: tabular-nums;
+        }
+    }
+}

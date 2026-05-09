@@ -87,3 +87,11 @@ export async function createGoogleUserInDB({ name, email, image }) {
         [name, email, image]
     )
 }
+
+export async function fetchLatestPostsFromDBByEmail(email) {
+    const [rows] = await pool.execute('SELECT * FROM posts WHERE author_email = ? ORDER BY created_at DESC  LIMIT 3 ',
+        [email]
+    )
+
+    return rows
+}
