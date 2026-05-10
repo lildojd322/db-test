@@ -1,0 +1,24 @@
+.changeAvatarButton {
+    position: absolute;
+    bottom: -6px;
+    right: 10px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid var(--loader-fg);
+    background: var(--loader-bg);
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+   svg {
+        width: 14px;
+        height: 14px;
+    }
+    &:hover {
+        background: var(--background);
+    }
+}

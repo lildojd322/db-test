@@ -101,3 +101,12 @@ export async function fetchLatestPostsFromDBByEmail(email) {
 
     return rows
 }
+
+
+
+export async function updateUserAvatarByEmail(email, url) {
+    await pool.execute(
+        'UPDATE users SET image = ? WHERE email = ?',
+        [url, email]
+    )
+}

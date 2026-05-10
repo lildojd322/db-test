@@ -70,12 +70,22 @@ export const authConfig: AuthOptions = {
         async session({ session, token }) {
             if (session.user && token.sub) {
                 session.user.id = token.sub
+                session.user.provider = token.provider
+                session.user.image = token.picture
             }
             return session
         },
-        async jwt({ token, user, account }) {
-            if (user) {
+        async jwt({ token, user, account, session, trigger }) {
 
+            if (trigger === 'update' && session?.image) {
+                token.picture = session.image
+                return token
+            }
+            if (user) {
+                if (account) {
+                    token.picture = user.image
+                    token.provider = account.provider
+                }
                 if (account?.provider === "google") {
 
                     const dbUser = await getUserFromDBByEmail(user.email);

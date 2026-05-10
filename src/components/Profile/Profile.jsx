@@ -5,20 +5,50 @@ import Image from "next/image"
 import styles from './Profile.module.scss'
 import getHighResImage from '../../hooks/getHighResImage'
 import defaultImage from '../../icons/avat.jpeg'
+import ChangeAvatar from '../ChangeAvatar/ChangeAvatar'
+import { useEffect, useState } from 'react'
+
 
 const Profile = () => {
-    const session = useSession()
+    const { data: session, update } = useSession()
+    const user = session?.user
+    const [userImageUrl, setUserImageUrl] = useState(user?.image || defaultImage.src)
+    const provider = user?.provider
 
-    const userImage = session?.data?.user?.image || defaultImage.src
 
+    const onAvatarChange = async (file) => {
+        const formData = new FormData()
+        formData.append('avatar', file)
 
+        const response = await fetch('/api/upload-avatar', {
+            method: 'POST',
+            body: formData
+        })
+        if (!response.ok) {
+            const { error } = await response.json()
+            return
+        }
+
+        const { url } = await response.json()
+        setUserImageUrl(url)
+        await update({ image: url })
+    }
+
+    useEffect(() => {
+        if (user?.image) {
+            setUserImageUrl(user.image)
+        }
+    }, [user?.image])
 
     return (
         <div className={styles.profileContainer}>
-            {session?.data?.user ? (
+            {user ? (
                 <>
-                    <Image className={styles.userAvatar} src={getHighResImage(userImage)} width={150} height={150} alt="user avatar" />
-                    <h1 className={styles.username}> {session?.data?.user?.name}</h1>
+                    <div className={styles.avatarBlock}>
+                        <Image className={styles.userAvatar} src={getHighResImage(userImageUrl)} width={150} height={150} alt="user avatar" />
+                        {provider === 'google' ? '' : <ChangeAvatar onAvatarChange={onAvatarChange} />}
+                    </div>
+                    <h1 className={styles.username}> {user?.name}</h1>
                     <button className={styles.signOutButton} onClick={() => signOut({
                         callbackUrl: '/signin'
                     })} >sign out</button>
@@ -26,10 +56,8 @@ const Profile = () => {
             ) : 'create an account or sign in to an existing one'
 
             }
-            <h1 style={{ marginTop: '20px', marginBottom: '20px' }}>
-                {`${session?.data?.user?.name}'s`} latest posts
-            </h1>
-            <LatestUserPosts email={session?.data?.user?.email} />
+
+            <LatestUserPosts name={user?.name} email={user?.email} />
         </div>
     )
 }

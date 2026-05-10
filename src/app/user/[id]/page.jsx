@@ -24,7 +24,7 @@ const User = async ({ params }) => {
 
     const session = await getServerSession(authConfig)
     const guestId = session?.user?.id
-    console.log(guestId)
+
 
     return (
         <>

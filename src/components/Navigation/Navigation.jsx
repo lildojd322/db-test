@@ -5,14 +5,20 @@ import styles from './Navigation.module.scss'
 import { useSession } from "next-auth/react"
 import Image from "next/image"
 import getHighResImage from '../../hooks/getHighResImage'
-import defaultImage from '../../icons/png-transparent-default-avatar-thumbnail.png'
+import defaultImage from '../../icons/avat.jpeg'
+import { useEffect, useState } from "react"
 
 
 const Navigation = ({ navLinks }) => {
     const pathname = usePathname()
     const session = useSession()
+    const [userImageUrl, setUserImageUrl] = useState(session?.data?.user?.image || defaultImage.src)
 
-    const userImage = session?.data?.user?.image || defaultImage.src
+    useEffect(() => {
+        if (session?.data?.user?.image) {
+            setUserImageUrl(session?.data?.user?.image)
+        }
+    }, [session?.data?.user?.image])
 
     return (
         <>
@@ -40,7 +46,7 @@ const Navigation = ({ navLinks }) => {
                         width: '32px'
                     }} href="/profile">
                         <Image className={styles.userAvatar}
-                            src={getHighResImage(userImage)}
+                            src={getHighResImage(userImageUrl)}
                             alt="avatar"
                             width={32}
                             height={32}

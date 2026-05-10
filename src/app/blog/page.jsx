@@ -28,7 +28,7 @@ const Blog = async ({ searchParams }) => {
 
             <h2 className='info-word'>  {infoWord} {countPosts} </h2>
 
-            <PostsList initialPosts={posts} keyword={keyword} />
+            <PostsList  key={keyword} initialPosts={posts} keyword={keyword} />
         </div>
     )
 }
