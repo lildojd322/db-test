@@ -1,18 +1,22 @@
 import { NextResponse } from 'next/server'
-import { writeFile, mkdir } from 'fs/promises'
-import path from 'path'
-import sharp from 'sharp'
+import { v2 as cloudinary } from 'cloudinary'
 import { updateUserAvatarByEmail } from '@/lib/db'
 import { getServerSession } from 'next-auth'
-import { authConfig } from '@/lib/auth'
+import { authConfig } from '../../../lib/auth'
 
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+})
 
-export const POST = async (request) => {
-
-
+export async function POST(request) {
     try {
-
         const session = await getServerSession(authConfig)
+
+        if (!session?.user?.email) {
+            return NextResponse.json({ error: 'Not authorized' }, { status: 401 })
+        }
 
         const formData = await request.formData()
         const file = formData.get('avatar')
@@ -26,36 +30,30 @@ export const POST = async (request) => {
             return NextResponse.json({ error: 'JPG, PNG or WebP only' }, { status: 400 })
         }
 
-
         if (file.size > 5 * 1024 * 1024) {
             return NextResponse.json({ error: 'File too large (max 5MB)' }, { status: 400 })
         }
 
-        const buffer = Buffer.from(await file.arrayBuffer())
-        const optimized = await sharp(buffer)
-            .resize(300, 300, { fit: 'cover' })
-            .webp({ quality: 80 })
-            .toBuffer()
+        const bytes = await file.arrayBuffer()
+        const buffer = Buffer.from(bytes)
+        const base64 = `data:${file.type};base64,${buffer.toString('base64')}`
 
+        const result = await cloudinary.uploader.upload(base64, {
+            folder: 'avatars',
+            transformation: [
+                { width: 300, height: 300, crop: 'fill' },
+                { format: 'webp', quality: 'auto' }
+            ]
+        })
 
-        const avatarsDir = path.join(process.cwd(), 'public/avatars')
-        await mkdir(avatarsDir, { recursive: true })
+        const url = result.secure_url
 
-        const filename = `avatar-${Date.now()}.webp`
-        const filepath = path.join(avatarsDir, filename)
-        await writeFile(filepath, optimized)
+        await updateUserAvatarByEmail(session.user.email, url)
 
-        const url = `/avatars/${filename}`
-
-
-        await updateUserAvatarByEmail(session?.user?.email, url)
         return NextResponse.json({ url })
-
 
     } catch (error) {
         console.error('Upload error:', error)
         return NextResponse.json({ error: 'Upload failed' }, { status: 500 })
     }
-
-
 }
