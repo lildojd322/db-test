@@ -3,6 +3,9 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import styles from './PostsList.module.scss'
 import { usePostStore } from '../../store/store'
+
+
+
 const PostsList = (props) => {
     const { initialPosts, keyword } = props
     const {

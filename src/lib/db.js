@@ -11,20 +11,41 @@ const dbConfig = {
 const pool = global.mysqlPool || (global.mysqlPool = mysql.createPool(dbConfig))
 
 export async function fetchPostsFromDB(limit = 20, offset = 0) {
-    const [rows] = await pool.query('SELECT * FROM posts ORDER BY id DESC LIMIT ? OFFSET ?', [Number(limit), Number(offset)])
+    const [rows] = await pool.execute(
+        `SELECT posts.*, 
+                COALESCE(users.name, 'Deleted User') AS author_name
+         FROM posts 
+         LEFT JOIN users ON posts.author_email = users.email 
+         ORDER BY posts.id DESC 
+         LIMIT ? OFFSET ?`,
+        [String(limit), String(offset)]
+    )
     return rows
 }
+
 
 export async function fetchPostFromDBById(id) {
-    const [rows] = await pool.execute('SELECT * FROM posts WHERE id = ? ', [id])
+    const [rows] = await pool.execute(
+        `SELECT posts.*, 
+                COALESCE(users.name, 'Deleted User') AS author_name
+         FROM posts 
+         LEFT JOIN users ON posts.author_email = users.email 
+         WHERE posts.id = ?`,
+        [id]
+    )
     return rows[0]
 }
-
 export async function fetchLatestPostFromDB() {
-    const [rows] = await pool.execute('SELECT * FROM posts ORDER BY created_at DESC LIMIT 3')
+    const [rows] = await pool.execute(
+        `SELECT posts.*, 
+                COALESCE(users.name, 'Deleted User') AS author_name
+         FROM posts 
+         LEFT JOIN users ON posts.author_email = users.email 
+         ORDER BY posts.created_at DESC 
+         LIMIT 3`
+    )
     return rows
 }
-
 export async function fetchCountPostFromDB() {
     const [rows] = await pool.execute('SELECT COUNT(*) AS count FROM posts ')
     return rows[0].count
@@ -36,9 +57,15 @@ export async function fetchCountPostFromDBByKeyword(keyword) {
 }
 
 export async function getPostsFromDBByKeyword(keyword, limit = 20, offset = 0) {
-    const [rows] = await pool.query(
-        'SELECT * FROM posts WHERE title LIKE ? ORDER BY id DESC LIMIT ? OFFSET ?',
-        [`%${keyword}%`, Number(limit), Number(offset)]
+    const [rows] = await pool.execute(
+        `SELECT posts.*, 
+                COALESCE(users.name, 'Deleted User') AS author_name
+         FROM posts 
+         LEFT JOIN users ON posts.author_email = users.email 
+         WHERE posts.title LIKE ? 
+         ORDER BY posts.id DESC 
+         LIMIT ? OFFSET ?`,
+        [`%${keyword}%`, String(limit), String(offset)]
     )
     return rows
 }
