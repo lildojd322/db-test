@@ -68,6 +68,7 @@ const CreatePostModal = ({ isOpen, changeModalStatus }) => {
                         placeholder="title"
                         required
                         className={styles.input}
+                        
                     />
                     <textarea
                         name="description"

@@ -69,9 +69,10 @@ const Post = async ({ params }) => {
                     cursor: 'pointer'
                 }}>
                     <pre style={{
-                        marginTop: '10px'
+                      
+                        fontSize: '20px'
                     }}> {authorName}</pre>
-                    <img src={authorImage || defaultImage.src} style={{ width: '35px', height: '35px', borderRadius: '50%' }} alt="avatar" />
+                    <img src={authorImage || defaultImage.src} style={{ width: '45px', height: '45px', borderRadius: '50%' }} alt="avatar" />
                 </Link>)
             }
 

@@ -57,7 +57,7 @@ const Profile = () => {
 
             }
 
-            <LatestUserPosts name={user?.name} email={user?.email} />
+            <LatestUserPosts name={user?.name} id={user?.id} />
         </div>
     )
 }

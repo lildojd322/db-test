@@ -3,14 +3,15 @@ import { useEffect, useState } from "react"
 import styles from './LatestUserPosts.module.scss'
 import Link from "next/link"
 
-const LatestUserPosts = ({ email, name }) => {
+const LatestUserPosts = ({ id, name }) => {
     const [latestPosts, setLatestPosts] = useState([])
     const [loading, setLoading] = useState(true)
 
-    useEffect(() => {
-        if (!email) return
 
-        fetch(`/api/latestUserPosts?email=${email}`)
+    useEffect(() => {
+        if (!id) return
+
+        fetch(`/api/latestUserPosts?id=${id}`)
             .then(res => res.json())
             .then(data => {
                 setLatestPosts(data.data || [])
@@ -20,7 +21,7 @@ const LatestUserPosts = ({ email, name }) => {
                 console.error(err)
                 setLoading(false)
             })
-    }, [email])
+    }, [id])
 
     return (
         <div>

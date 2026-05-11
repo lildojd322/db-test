@@ -1,15 +1,15 @@
-import { fetchLatestPostsFromDBByEmail } from '../../../lib/db'
+import { fetchLatestPostsFromDBById } from '../../../lib/db'
 import { NextResponse } from "next/server"
 
 export const GET = async (request) => {
     try {
         const { searchParams } = new URL(request.url)
-        const email = searchParams.get('email')
+        const userId = searchParams.get('id')
 
-        if (!email) {
-            return NextResponse.json({ error: "Email required" }, { status: 400 })
+        if (!userId) {
+            return NextResponse.json({ error: "id required" }, { status: 400 })
         }
-           const posts = await fetchLatestPostsFromDBByEmail(email)
+        const posts = await fetchLatestPostsFromDBById(userId)
 
         return NextResponse.json({
             message: "post fetched successfully",

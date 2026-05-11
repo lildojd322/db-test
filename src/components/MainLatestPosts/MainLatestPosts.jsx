@@ -41,7 +41,7 @@ const MainLatestPosts = () => {
                 return (
                     <li key={post.id} className={styles.postCard}>
                         <Link href={`/blog/${post.id}`}>
-                            <span>{post.title}</span>
+                            <span className={styles.postTitle}>{post.title}</span>
                             <div className={styles.postMeta}>
                                 <span className={styles.author}>{post.author_name}</span>
                                 <span className={styles.date}>

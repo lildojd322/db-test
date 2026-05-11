@@ -15,6 +15,6 @@ export const loginSchema = z.object({
 
 
 export const postSchema = z.object({
-     title: z.string().min(2, "The name must be at least 2 characters long"),
-    description: z.string().min(3, "The name must be at least 3 characters long")
+     title: z.string().min(2, "The name must be at least 2 characters long").max(50, 'title is too long'),
+    description: z.string().min(3, "The name must be at least 3 characters long").max(300, 'description is too long ')
 })

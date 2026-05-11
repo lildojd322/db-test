@@ -15,7 +15,7 @@ export async function fetchPostsFromDB(limit = 20, offset = 0) {
         `SELECT posts.*, 
                 COALESCE(users.name, 'Deleted User') AS author_name
          FROM posts 
-         LEFT JOIN users ON posts.author_email = users.email 
+         LEFT JOIN users ON posts.userId = users.id
          ORDER BY posts.id DESC 
          LIMIT ? OFFSET ?`,
         [String(limit), String(offset)]
@@ -29,7 +29,7 @@ export async function fetchPostFromDBById(id) {
         `SELECT posts.*, 
                 COALESCE(users.name, 'Deleted User') AS author_name
          FROM posts 
-         LEFT JOIN users ON posts.author_email = users.email 
+         LEFT JOIN users ON posts.userId = users.id 
          WHERE posts.id = ?`,
         [id]
     )
@@ -40,7 +40,7 @@ export async function fetchLatestPostFromDB() {
         `SELECT posts.*, 
                 COALESCE(users.name, 'Deleted User') AS author_name
          FROM posts 
-         LEFT JOIN users ON posts.author_email = users.email 
+         LEFT JOIN users ON posts.userId = users.id
          ORDER BY posts.created_at DESC 
          LIMIT 3`
     )
@@ -61,7 +61,7 @@ export async function getPostsFromDBByKeyword(keyword, limit = 20, offset = 0) {
         `SELECT posts.*, 
                 COALESCE(users.name, 'Deleted User') AS author_name
          FROM posts 
-         LEFT JOIN users ON posts.author_email = users.email 
+         LEFT JOIN users ON posts.userId = users.id
          WHERE posts.title LIKE ? 
          ORDER BY posts.id DESC 
          LIMIT ? OFFSET ?`,
@@ -105,15 +105,13 @@ export async function forwardUserToDB(email, password, name) {
 }
 
 
-export async function forwardPostToDB(title, description, email, name) {
+export async function forwardPostToDB(title, description, email, name, userId) {
     await pool.execute(
-        'INSERT INTO posts (title, body, author_email, author_name) VALUES (?, ?, ?, ?)',
-        [title, description, email, name]
+        'INSERT INTO posts (title, body, author_email, author_name, userId) VALUES (?, ?, ?, ?, ?)',
+        [title, description, email, name, userId]
     )
     return { success: true }
 }
-
-
 export async function createGoogleUserInDB({ name, email, image }) {
     await pool.execute(
         'INSERT INTO users (name, email, image, password) VALUES (?, ?, ?, NULL)',
@@ -121,9 +119,9 @@ export async function createGoogleUserInDB({ name, email, image }) {
     )
 }
 
-export async function fetchLatestPostsFromDBByEmail(email) {
-    const [rows] = await pool.execute('SELECT * FROM posts WHERE author_email = ? ORDER BY created_at DESC  LIMIT 3 ',
-        [email]
+export async function fetchLatestPostsFromDBById(userId) {
+    const [rows] = await pool.execute('SELECT * FROM posts WHERE userId = ? ORDER BY created_at DESC  LIMIT 3 ',
+        [userId]
     )
 
     return rows
