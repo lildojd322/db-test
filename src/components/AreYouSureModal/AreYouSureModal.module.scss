@@ -1,0 +1,88 @@
+.h1 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--foreground);
+  text-align: center;
+}
+
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px); 
+}
+
+.modalContent {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+}
+.buttonsContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+}
+
+.yesButton {
+  color: var(--foreground);
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+    background-color: rgba(38, 220, 47, 0.4);
+    border: 1px solid rgba(53, 220, 38, 0.3);
+    cursor: pointer;
+    margin-top: 35px;
+    width: fit-content;
+
+    &:hover {
+        background-color: rgba(38, 220, 90, 0.5);
+        border-color: rgba(38, 220, 47, 0.5);
+        transform: translateY(-1px);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+
+}
+.noButton {
+    color: var(--foreground);
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+    background-color: rgba(220, 38, 38, 0.4);
+    border: 1px solid rgba(220, 38, 38, 0.3);
+    cursor: pointer;
+    margin-top: 35px;
+    width: fit-content;
+
+    &:hover {
+        background-color: rgba(220, 38, 38, 0.5);
+        border-color: rgba(220, 38, 38, 0.5);
+        transform: translateY(-1px);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+
