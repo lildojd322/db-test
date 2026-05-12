@@ -42,7 +42,7 @@ const Profile = () => {
 
     return (
         <div className={styles.profileContainer}>
-            {user ? (
+            {user && (
                 <>
                     <div className={styles.avatarBlock}>
                         <Image className={styles.userAvatar} src={getHighResImage(userImageUrl)} width={150} height={150} alt="user avatar" />
@@ -53,7 +53,7 @@ const Profile = () => {
                         callbackUrl: '/signin'
                     })} >sign out</button>
                 </>
-            ) : 'create an account or sign in to an existing one'
+            ) 
 
             }
 

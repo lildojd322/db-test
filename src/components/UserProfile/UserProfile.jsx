@@ -25,7 +25,7 @@ const UserProfile = ({ user }) => {
             <h1 style={{ marginTop: '20px', marginBottom: '20px' }}>
                 {`${user.name}'s`} latest posts
             </h1>
-            <LatestUserPosts id={user.id} />
+            <LatestUserPosts id={user.id} name={user.name} />
 
         </div>
     )

@@ -27,9 +27,7 @@ const LatestUserPosts = ({ id, name }) => {
         <div>
             {latestPosts.length > 0 ? (
                 <>
-                    <h1 style={{ marginTop: '20px', marginBottom: '20px' }}>
-                        {name}'s latest posts
-                    </h1>
+                
                     <ul>
                         {latestPosts.map(post => (
                             <li key={post.id} className={styles.postItem}>
