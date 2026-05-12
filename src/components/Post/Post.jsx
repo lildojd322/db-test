@@ -38,7 +38,7 @@ const Post = async ({ post, user }) => {
             )}
 
             <pre className={styles.meta}>created: {formattedDate}</pre>
-            {session?.user?.id === user?.id && <DeleteButton postId={post.id}> delete button </DeleteButton>}
+            {session?.user?.id === user?.id && <DeleteButton postId={post.id}> delete post </DeleteButton>}
         </div>
     )
 }
