@@ -33,11 +33,14 @@ const SignInForm = () => {
             redirect: false,
         })
 
-        if (response && !response.error) {
-            router.push('/profile')
-        } else {
+      if (response?.error === 'TooManyAttempts') {
+            setError('Too many attempts. Please try again later.')
+        } else if (response?.error) {
             setError('Invalid email or password')
+        } else if (response && !response.error) {
+            router.push('/profile')
         }
+       
     }
 
     return (

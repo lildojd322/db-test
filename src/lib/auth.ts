@@ -4,6 +4,8 @@ import Credentials from "next-auth/providers/credentials";
 import { getUserFromDBByEmail, createGoogleUserInDB } from '@/lib/db'
 import { compare } from 'bcryptjs'
 import { loginSchema } from '@/lib/zod'
+import { headers } from 'next/headers'
+import { attempts, checkLimit } from './ratelimit'
 
 export const authConfig: AuthOptions = {
     providers: [
@@ -17,11 +19,27 @@ export const authConfig: AuthOptions = {
                 password: { label: 'password', type: 'password', required: true }
             },
             async authorize(credentials) {
+                if (!credentials) {
+                    return null
+                }
+
                 const parsedCredentials = loginSchema.safeParse(credentials)
                 if (!parsedCredentials.success) {
                     return null
                 }
                 const { email, password } = parsedCredentials.data
+
+
+
+                const headersList = await headers()
+                const ip = headersList.get('x-forwarded-for') || 'unknown'
+                const key = `${ip}:${credentials.email}`
+
+                const limit = checkLimit(key)
+
+                if (!limit.allowed) {
+                      throw new Error('TooManyAttempts')
+                }
 
 
                 const currentUser = await getUserFromDBByEmail(email)
@@ -33,6 +51,7 @@ export const authConfig: AuthOptions = {
                     )
 
                     if (isPasswordCorrect) {
+                        attempts.delete(key)
                         const { password, ...userWithoutPass } = currentUser
                         return userWithoutPass as User
                     }
