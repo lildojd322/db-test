@@ -6,17 +6,19 @@ import { hash } from 'bcryptjs'
 
 const dbConfig = {
     host: process.env.DB_HOST,
-    port: process.env.DB_PORT || 3306,
+    port: process.env.DB_PORT || 4000,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    ssl: {
-        ca: process.env.DB_SSL_CA,
-        rejectUnauthorized: true
-    }
+    ssl: {}
 }
 
-const pool = global.mysqlPool || (global.mysqlPool = mysql.createPool(dbConfig))
+if (!global.mysqlPool || global.mysqlPool._closed) {
+    global.mysqlPool = mysql.createPool(dbConfig)
+}
+
+const pool = global.mysqlPool
+
 
 export async function fetchPostsFromDB(limit = 20, offset = 0) {
     const [rows] = await pool.execute(
