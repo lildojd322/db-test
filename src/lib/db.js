@@ -1,7 +1,6 @@
 import mysql from 'mysql2/promise'
 import { hash } from 'bcryptjs'
-const fs = require('fs')
-const path = require('path')
+
 
 
 
@@ -12,7 +11,7 @@ const dbConfig = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     ssl: {
-        ca: fs.readFileSync(path.join(process.cwd(), 'src', 'cert', 'isrgrootx1.pem')),
+        ca: process.env.DB_SSL_CA,
         rejectUnauthorized: true
     }
 }
