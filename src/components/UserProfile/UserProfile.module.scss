@@ -25,3 +25,32 @@
   color: var(--foreground);
   margin-bottom: 0.5rem;
 }
+
+.nameLatestTitle {
+  margin-block: 20px ;
+}
+
+@media (max-width: 359px) {
+    .avatar {
+        width: 100px;
+        height: 100px ;
+    }
+    .name {
+    font-size: 15px;
+    margin-bottom: 0;
+}
+
+.profileWrapper {
+ 
+  padding: 1rem 1rem;
+
+}
+
+.nameLatestTitle {
+   margin-block: 5px ;
+   font-size: 25px;
+}
+
+
+
+}

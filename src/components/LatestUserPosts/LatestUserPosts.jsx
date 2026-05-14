@@ -46,7 +46,7 @@ const LatestUserPosts = ({ id, name }) => {
                     </ul>
                 </>
             ) : (
-                <h1 style={{ marginTop: '20px' }}>
+                <h1 className={styles.haventPosts}>
                     {name} haven't posted anything yet
                 </h1>
             )}

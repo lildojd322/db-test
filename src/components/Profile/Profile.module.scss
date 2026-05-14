@@ -4,12 +4,14 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    padding:  2rem 1rem;
 }
 
 .userAvatar {
     height: 150px;
     width: 150px;
     border-radius: 50%;
+    
 }
 
 .signOutButton {
@@ -42,7 +44,29 @@
 
 .avatarBlock {
     position: relative;
-    width: 150px;
-    height: 150px;
+   
     display: inline-block;
+}
+
+@media (max-width: 359px) {
+
+.profileContainer {
+  
+    padding:  1rem 1rem;
+}
+
+    .userAvatar {
+        width: 100px !important;
+        height: 100px !important;
+    }
+    .username {
+    font-size: 15px;
+}
+
+.signOutButton {
+    margin-top: 15px;
+
+
+   
+}
 }

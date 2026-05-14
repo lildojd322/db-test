@@ -1,9 +1,9 @@
-
 .searchForm {
   margin: 2rem 0;
   display: flex;
   gap: 1rem;
-  max-width: 500px;
+  width: 100%;
+
 }
 
 .searchInput {
@@ -36,4 +36,16 @@
 
 .searchButton:hover {
   background: var(--primary-hover);
+}
+
+@media (max-width: 375px) {
+
+  .searchForm {
+ 
+  flex-direction: column;
+}
+.searchInput {
+  width: 100%;
+}
+
 }

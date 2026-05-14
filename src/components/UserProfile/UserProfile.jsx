@@ -22,7 +22,7 @@ const UserProfile = ({ user }) => {
             />
 
             <h1 className={styles.name}>{user.name}</h1>
-            <h1 style={{ marginTop: '20px', marginBottom: '20px' }}>
+            <h1 className={styles.nameLatestTitle}>
                 {`${user.name}'s`} latest posts
             </h1>
             <LatestUserPosts id={user.id} name={user.name} />

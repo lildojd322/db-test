@@ -3,7 +3,9 @@
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 1.5rem;
     width: 100%;
+        
     max-width: 1100px;
+
     margin: 2rem auto;
     padding: 0 1rem;
     list-style: none;
@@ -82,13 +84,14 @@
 }
 
 
-@media (max-width: 768px) {
+@media (max-width: 968px) {
     .postsGrid {
         grid-template-columns: 1fr;
     }
 
     .postCard a {
         min-height: 120px;
+        width: 300px;
         padding: 1.5rem;
     }
 }
