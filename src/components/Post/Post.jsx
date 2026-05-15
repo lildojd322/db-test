@@ -13,6 +13,7 @@ const Post = async ({ post, user }) => {
     const authorImage = user?.image || defaultImage.src
     const isDeleted = !user
 
+
     const formattedDate = new Date(post.created_at).toLocaleDateString('en-EN', {
         day: 'numeric',
         month: 'long',
@@ -21,10 +22,11 @@ const Post = async ({ post, user }) => {
         minute: '2-digit'
     })
 
-   
+
 
     return (
         <div className={styles.postContainer}>
+
             <h1 className={styles.title}>{post.title}</h1>
             <p className={styles.body}>{post.body}</p>
 
@@ -38,7 +40,7 @@ const Post = async ({ post, user }) => {
             )}
 
             <pre className={styles.meta}>created: {formattedDate}</pre>
-            {session?.user?.id === user?.id && <DeleteButton postId={post.id}> delete post </DeleteButton>}
+            {String(session?.user?.id) === String(user?.id) && <DeleteButton postId={post.id}> delete post </DeleteButton>}
         </div>
     )
 }
