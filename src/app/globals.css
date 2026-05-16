@@ -223,7 +223,7 @@
   }
 
   .skeleton-title {
-    width: 350px;
+    max-width: 350px;
     height: 24px;
     background: #6b7280 !important;
     border-radius: 6px;

@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { useEffect, useState } from "react"
 
 import styles from './MainLatestPosts.module.scss'
+import LoadingLatestsPosts from '../LoadingLatestsPosts/LoadingLatestsPosts'
 
 
 const MainLatestPosts = () => {
@@ -26,16 +27,15 @@ const MainLatestPosts = () => {
             })
     }, [])
 
-    if (loading) {
-        return <div>Loading posts...</div>
-    }
+
+    if (loading) return <LoadingLatestsPosts />
 
     if (posts.length === 0) {
         return <div>No posts found</div>
     }
 
-
     return (
+
         <ul className={styles.postsGrid}>
             {posts.map((post) => {
                 return (

@@ -1,9 +1,10 @@
 .postsGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 1.5rem;
     width: 100%;
-        
+
     max-width: 1100px;
 
     margin: 2rem auto;
@@ -12,13 +13,20 @@
 }
 
 .postCard {
+    display: flex;
     background: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: 12px;
     transition: all 0.2s ease-in-out;
-    display: flex;
+
     overflow: hidden;
     box-shadow: var(--shadow);
+    width: 338px;
+    flex-shrink: 1;
+
+
+    align-items: center;
+    justify-content: center;
 
 }
 
@@ -85,13 +93,20 @@
 
 
 @media (max-width: 968px) {
-    .postsGrid {
-        grid-template-columns: 1fr;
-    }
+
 
     .postCard a {
         min-height: 120px;
         width: 300px;
         padding: 1.5rem;
+    }
+}
+
+
+
+@media (max-width: 400px) {
+    .postCard {
+        width: 100%;
+        min-width: 0;
     }
 }

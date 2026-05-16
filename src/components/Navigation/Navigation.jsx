@@ -59,7 +59,7 @@ const Navigation = ({ navLinks }) => {
                             </Link>
                         )}
                         {session.status === 'unauthenticated' && (
-                            <Link onClick={closeMenu} href="/api/auth/signin" className={styles.signInButton}>sign in</Link>
+                            <Link onClick={closeMenu} href="/api/auth/signin" className={styles.signInButtonIntoBurger}>sign in</Link>
                         )}
                         {navLinks.map(link => {
                             const isActive = pathname === link.href

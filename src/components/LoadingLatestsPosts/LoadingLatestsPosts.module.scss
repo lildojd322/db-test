@@ -1,0 +1,65 @@
+.container {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    list-style: none;
+}
+
+.card {
+    height: 192px;
+    width: 338px;
+
+}
+
+.skeletonInner {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    height: 100%;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.title {
+    width: 80%;
+    height: 24px;
+    margin-bottom: 50px;
+}
+
+.meta {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 10px;
+    gap: 10px;
+    padding-top: 12px;
+}
+
+.line1 {
+    width: 40%;
+    height: 14px;
+}
+
+.line2 {
+    width: 30%;
+    height: 14px;
+}
+
+@media (max-width: 400px) {
+    .card {
+
+        max-width: 338px;
+        width: 100%;
+        min-width: 280px;
+
+    }
+
+}
