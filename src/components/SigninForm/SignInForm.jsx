@@ -5,10 +5,10 @@ import { useState } from "react"
 import styles from './SignInForm.module.scss'
 import { loginSchema } from '@/lib/zod'
 
-
 const SignInForm = () => {
     const router = useRouter()
     const [error, setError] = useState('')
+
 
     const handleSubmit = async (event) => {
         event.preventDefault()
@@ -42,6 +42,7 @@ const SignInForm = () => {
         }
        
     }
+
 
     return (
         <form onSubmit={handleSubmit} className={styles.form}>

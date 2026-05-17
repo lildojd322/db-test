@@ -1,4 +1,4 @@
-import { fetchPostsFromDB, getPostsFromDBByKeyword } from "@/lib/db"
+import { fetchPostsFromDB, getPostsFromDBByKeyword, fetchPostsFromDBById } from "@/lib/db"
 import { NextResponse } from "next/server"
 
 export async function GET(request) {
@@ -6,10 +6,15 @@ export async function GET(request) {
     const limit = parseInt(searchParams.get("limit")) || 20
     const offset = parseInt(searchParams.get("offset")) || 0
     const keyword = searchParams.get("keyword") || ""
+    const userId = searchParams.get("userId") || ""
+
 
     let posts = []
     try {
-        if (keyword) {
+        if (userId) {
+            posts = await fetchPostsFromDBById(userId, limit, offset)
+        }
+        else if (keyword) {
             posts = await getPostsFromDBByKeyword(keyword, limit, offset)
         } else {
             posts = await fetchPostsFromDB(limit, offset)

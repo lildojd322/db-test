@@ -5,9 +5,10 @@ import Link from "next/link"
 
 
 const LatestUserPosts = ({ id, name }) => {
+
     const [latestPosts, setLatestPosts] = useState([])
     const [loading, setLoading] = useState(true)
-
+    const [countPosts, setCountPosts] = useState(0)
 
     useEffect(() => {
         if (!id) return
@@ -15,7 +16,8 @@ const LatestUserPosts = ({ id, name }) => {
         fetch(`/api/latestUserPosts?id=${id}`)
             .then(res => res.json())
             .then(data => {
-                setLatestPosts(data.data || [])
+                setLatestPosts(data.data.posts || [])
+                setCountPosts(data.data.count || 0)
                 setLoading(false)
             })
             .catch(err => {
@@ -30,9 +32,15 @@ const LatestUserPosts = ({ id, name }) => {
         <div>
             {latestPosts.length > 0 ? (
                 <>
-                    <h1 className={styles.nameLatestTitle} style={{ marginTop: '20px' }}>
+                    <div className={styles.postsInfo} >
+                        <h2 >   total posts: {countPosts}</h2>
+                        {countPosts > 3 && <Link href={`/blog?userId=${id}&name=${encodeURIComponent(name)}`} style={{ color: 'var(--primary)', textDecoration: 'underline', fontSize: '18px' }} > show all </Link>}
+                    </div>
+                    <h1 className={styles.nameLatestTitle} style={{ marginTop: '10px' }}>
                         {`${name}'s`} latest posts
+
                     </h1>
+
                     <ul>
                         {latestPosts.map(post => (
                             <li key={post.id} className={styles.postItem}>

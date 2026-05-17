@@ -7,7 +7,7 @@ import { usePostStore } from '../../store/store'
 
 
 const PostsList = (props) => {
-    const { initialPosts, keyword } = props
+    const { initialPosts, keyword, userId } = props
     const {
         storedPosts, setPosts,
         storedOffset, setOffset,
@@ -35,14 +35,16 @@ const PostsList = (props) => {
     const currentOffset = storedPosts.length > 0 ? storedOffset : initialPosts.length
     const currentHasMore = storedPosts.length > 0 ? storedHasMore : (initialPosts.length >= 20)
 
-  
+
 
 
     const loadMore = async () => {
-
         const res = await fetch(
-            keyword ? `/api/posts?offset=${currentOffset}&limit=20&keyword=${encodeURIComponent(keyword)}`
-                : `/api/posts?offset=${currentOffset}&limit=20`
+            userId
+                ? `/api/posts?offset=${currentOffset}&limit=20&userId=${userId}`
+                : keyword
+                    ? `/api/posts?offset=${currentOffset}&limit=20&keyword=${encodeURIComponent(keyword)}`
+                    : `/api/posts?offset=${currentOffset}&limit=20`
         )
         const newPosts = await res.json()
         if (newPosts.length < 20) setHasMore(false)
@@ -70,7 +72,7 @@ const PostsList = (props) => {
                     </li>
                 )) : <h1>posts not found</h1>}
             </ul>
-            {currentHasMore  && (
+            {currentHasMore && (
                 <button className={styles.loadMoreBtn} onClick={loadMore} disabled={loading}>
                     {loading ? 'Loading...' : 'show more'}
                 </button>

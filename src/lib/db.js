@@ -1,9 +1,6 @@
 import mysql from 'mysql2/promise'
 import { hash } from 'bcryptjs'
 
-
-
-
 const dbConfig = {
     host: process.env.DB_HOST,
     port: process.env.DB_PORT || 4000,
@@ -19,6 +16,7 @@ if (!global.mysqlPool || global.mysqlPool._closed) {
 
 const pool = global.mysqlPool
 
+// posts
 
 export async function fetchPostsFromDB(limit = 20, offset = 0) {
     const [rows] = await pool.execute(
@@ -31,6 +29,7 @@ export async function fetchPostsFromDB(limit = 20, offset = 0) {
     )
     return rows
 }
+
 export async function fetchPostFromDBById(id) {
     const [rows] = await pool.execute(
         `SELECT posts.*, 
@@ -79,14 +78,53 @@ export async function getPostsFromDBByKeyword(keyword, limit = 20, offset = 0) {
     return rows
 }
 
+export async function fetchLatestPostsFromDBById(userId) {
+    const [rows] = await pool.execute(
+        'SELECT * FROM posts WHERE userId = ? ORDER BY created_at DESC LIMIT 3',
+        [userId]
+    )
+    return rows
+}
+
+export async function forwardPostToDB(title, description, email, name, userId) {
+    await pool.execute(
+        'INSERT INTO posts (title, body, author_email, author_name, userId) VALUES (?, ?, ?, ?, ?)',
+        [title, description, email, name, userId]
+    )
+    return { success: true }
+}
+
 export async function deletePostById(id) {
     await pool.execute('DELETE FROM posts WHERE id = ?', [id])
 }
 
-export async function getLinksFromDB() {
-    const [rows] = await pool.execute('SELECT * FROM links')
+export async function fetchCountPostFromDBByUserId(userId) {
+    const [rows] = await pool.execute('SELECT COUNT(*) AS count FROM posts WHERE userId = ?', [userId])
+    return rows[0].count
+}
+
+export async function fetchPostsFromDBById(userId, limit = 20, offset = 0) {
+    const [rows] = await pool.execute(
+        `SELECT * FROM posts 
+         WHERE userId = ? 
+         ORDER BY created_at DESC 
+         LIMIT ${parseInt(limit)} OFFSET ${parseInt(offset)}`,
+        [userId]
+    )
     return rows
 }
+export async function fetchCountPostFromDBById(userId) {
+    const [rows] = await pool.execute(
+        `SELECT COUNT(*) AS count FROM posts WHERE userId = ?`,
+        [userId]
+    )
+    return rows[0].count || 0
+}
+
+
+
+
+// users
 
 export async function getUsersFromDB() {
     const [rows] = await pool.execute('SELECT * FROM users')
@@ -112,14 +150,6 @@ export async function forwardUserToDB(email, password, name) {
     return { success: true }
 }
 
-export async function forwardPostToDB(title, description, email, name, userId) {
-    await pool.execute(
-        'INSERT INTO posts (title, body, author_email, author_name, userId) VALUES (?, ?, ?, ?, ?)',
-        [title, description, email, name, userId]
-    )
-    return { success: true }
-}
-
 export async function createGoogleUserInDB({ name, email, image }) {
     await pool.execute(
         'INSERT INTO users (name, email, image, password) VALUES (?, ?, ?, NULL)',
@@ -127,17 +157,16 @@ export async function createGoogleUserInDB({ name, email, image }) {
     )
 }
 
-export async function fetchLatestPostsFromDBById(userId) {
-    const [rows] = await pool.execute(
-        'SELECT * FROM posts WHERE userId = ? ORDER BY created_at DESC LIMIT 3',
-        [userId]
-    )
-    return rows
-}
-
 export async function updateUserAvatarByEmail(email, url) {
     await pool.execute(
         'UPDATE users SET image = ? WHERE email = ?',
         [url, email]
     )
+}
+
+//links
+
+export async function getLinksFromDB() {
+    const [rows] = await pool.execute('SELECT * FROM links')
+    return rows
 }

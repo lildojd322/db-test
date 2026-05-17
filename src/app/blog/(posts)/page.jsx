@@ -1,5 +1,5 @@
 
-import { fetchPostsFromDB, getPostsFromDBByKeyword, fetchCountPostFromDB, fetchCountPostFromDBByKeyword } from '../../../lib/db'
+import { fetchPostsFromDB, getPostsFromDBByKeyword, fetchCountPostFromDB, fetchCountPostFromDBByKeyword, fetchPostsFromDBById, fetchCountPostFromDBById } from '../../../lib/db'
 import SearchPost from '../../../components/SearchPost/SearchPost'
 import PostsList from '../../../components/PostsList/PostsList'
 import CreatePostButton from '../../../components/CreatePostButton/CreatePostButton'
@@ -10,23 +10,47 @@ export const metadata = {
 
 const Blog = async ({ searchParams }) => {
 
-    const { search = '' } = await searchParams
+    const { search = '', userId = '', name } = await searchParams
     const keyword = search
 
-    const posts = keyword ? await getPostsFromDBByKeyword(keyword) : await fetchPostsFromDB()
-    const countPosts = keyword ? await fetchCountPostFromDBByKeyword(keyword) : await fetchCountPostFromDB()
-    const infoWord = keyword ? 'posts found:' : 'total posts: '
+
+    let posts
+    if (userId) {
+        posts = await fetchPostsFromDBById(userId)
+    } else if (keyword) {
+        posts = await getPostsFromDBByKeyword(keyword)
+    } else {
+        posts = await fetchPostsFromDB()
+    }
+
+    let countPosts
+    if (userId) {
+        countPosts = await fetchCountPostFromDBById(userId)
+    } else if (keyword) {
+        countPosts = await fetchCountPostFromDBByKeyword(keyword)
+    } else {
+        countPosts = await fetchCountPostFromDB()
+    }
+
+    let infoWord
+    if (name) {
+        infoWord = `${name}'s total posts:`
+    } else if (keyword) {
+        infoWord = 'posts found:'
+    } else {
+        infoWord = 'total posts: '
+    }
 
     return (
         <div className='blog-container'>
-            <h1>BLOG</h1>
 
-            <SearchPost />
-            <CreatePostButton />
+
+            {!userId && <SearchPost />}
+            {!userId && <CreatePostButton />}
 
             <h2 className='info-word'>  {infoWord} {countPosts} </h2>
 
-            <PostsList  key={keyword} initialPosts={posts} keyword={keyword} />
+            <PostsList userId={userId} key={`${keyword}-${userId || ''}`} initialPosts={posts} keyword={keyword} />
         </div>
     )
 }

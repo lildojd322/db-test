@@ -11,7 +11,7 @@ const LoadingPosts = () => {
             <h2 className='info-word'>  total posts: ... </h2>
 
             {[1, 2, 3, 4, 5, 6].map((i) => (
-                <div key={i} className="post-skeleton">
+                <div key={i} className="post-skeleton" >
                     <div className="skeleton-title"></div>
                     <div className="skeleton-line"></div>
                     <div className="skeleton-line"></div>
