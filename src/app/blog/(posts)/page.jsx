@@ -1,10 +1,8 @@
 
-import { fetchPostsFromDB, getPostsFromDBByKeyword, fetchCountPostFromDB, fetchCountPostFromDBByKeyword } from '../../lib/db'
-import SearchPost from '../../components/SearchPost/SearchPost'
-import PostsList from '../../components/PostsList/PostsList'
-import CreatePostButton from '../../components/CreatePostButton/CreatePostButton'
-
-
+import { fetchPostsFromDB, getPostsFromDBByKeyword, fetchCountPostFromDB, fetchCountPostFromDBByKeyword } from '../../../lib/db'
+import SearchPost from '../../../components/SearchPost/SearchPost'
+import PostsList from '../../../components/PostsList/PostsList'
+import CreatePostButton from '../../../components/CreatePostButton/CreatePostButton'
 export const metadata = {
     title: "blog",
 }

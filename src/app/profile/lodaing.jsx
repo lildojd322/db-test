@@ -1,10 +1,9 @@
+import styles from '../../components/Profile/Profile.module.scss'
 
 
 const LoadingPost = () => {
     return (
-        <div >
-           Loading...
-        </div>
+        'loading'
     )
 }
 

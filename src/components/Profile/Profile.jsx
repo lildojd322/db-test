@@ -7,6 +7,7 @@ import getHighResImage from '../../hooks/getHighResImage'
 import defaultImage from '../../icons/avat.jpeg'
 import ChangeAvatar from '../ChangeAvatar/ChangeAvatar'
 import { useEffect, useState } from 'react'
+import ProfileLoading from '../ProfileLoading/ProfileLoading'
 
 
 const Profile = () => {
@@ -14,7 +15,7 @@ const Profile = () => {
     const user = session?.user
     const [userImageUrl, setUserImageUrl] = useState(user?.image || defaultImage.src)
     const provider = user?.provider
-
+    const [loading, setLoading] = useState(true)
 
     const onAvatarChange = async (file) => {
         const formData = new FormData()
@@ -36,10 +37,11 @@ const Profile = () => {
 
     useEffect(() => {
         if (user?.image) {
+            setLoading(false)
             setUserImageUrl(user.image)
         }
     }, [user?.image])
-
+    if (loading) return (<ProfileLoading />)
     return (
         <div className={styles.profileContainer}>
             {user && (
@@ -52,8 +54,9 @@ const Profile = () => {
                     <button className={styles.signOutButton} onClick={() => signOut({
                         callbackUrl: '/signin'
                     })} >sign out</button>
+                   
                 </>
-            ) 
+            )
 
             }
 

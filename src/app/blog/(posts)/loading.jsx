@@ -1,5 +1,5 @@
-import SearchPost from "../../components/SearchPost/SearchPost"
-import CreatePostButton from '../../components/CreatePostButton/CreatePostButton'
+import SearchPost from "../../../components/SearchPost/SearchPost"
+import CreatePostButton from '../../../components/CreatePostButton/CreatePostButton'
 
 const LoadingPosts = () => {
     return (

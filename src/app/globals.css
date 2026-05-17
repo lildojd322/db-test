@@ -42,7 +42,7 @@
     --primary-hover: #2563eb;
 
     svg {
-      stroke: #000; 
+      stroke: #000;
     }
   }
 
@@ -302,4 +302,16 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+  }
+
+
+  @media (hover: none) and (pointer: coarse) {
+    *:hover {
+      transform: none !important;
+      color: inherit !important;
+      background: inherit !important;
+      border-color: inherit !important;
+      box-shadow: none !important;
+    }
+
   }

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import styles from './LatestUserPosts.module.scss'
 import Link from "next/link"
 
+
 const LatestUserPosts = ({ id, name }) => {
     const [latestPosts, setLatestPosts] = useState([])
     const [loading, setLoading] = useState(true)
@@ -23,11 +24,15 @@ const LatestUserPosts = ({ id, name }) => {
             })
     }, [id])
 
+
+
     return (
         <div>
             {latestPosts.length > 0 ? (
                 <>
-                
+                    <h1 className={styles.nameLatestTitle} style={{ marginTop: '20px' }}>
+                        {`${name}'s`} latest posts
+                    </h1>
                     <ul>
                         {latestPosts.map(post => (
                             <li key={post.id} className={styles.postItem}>
@@ -44,6 +49,7 @@ const LatestUserPosts = ({ id, name }) => {
                             </li>
                         ))}
                     </ul>
+
                 </>
             ) : (
                 <h1 className={styles.haventPosts}>

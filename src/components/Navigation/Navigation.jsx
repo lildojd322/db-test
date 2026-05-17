@@ -9,6 +9,7 @@ import defaultImage from '../../icons/avat.jpeg'
 import { useRef, useEffect, useState } from "react"
 import NavigationLoading from '../NavigationLoading/NavigationLoading'
 
+import SwitchTheme from '@/components/SwitchTheme/SwitchTheme'
 
 const Navigation = ({ navLinks }) => {
     const pathname = usePathname()
@@ -97,6 +98,7 @@ const Navigation = ({ navLinks }) => {
                     {session.status === 'unauthenticated' && (
                         <Link href="/api/auth/signin" className={styles.signInButton}>sign in</Link>
                     )}
+                    <SwitchTheme />
                 </div></>}
 
         </>

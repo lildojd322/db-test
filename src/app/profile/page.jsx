@@ -6,7 +6,7 @@ export const metadata = {
 
 }
 
-const profile = () => {
+const profile = async () => {
 
 
 

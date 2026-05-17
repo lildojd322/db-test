@@ -6,13 +6,20 @@ import getHighResImage from '../../hooks/getHighResImage'
 import { useSession } from "next-auth/react"
 import LatestUserPosts from '../../components/LatestUserPosts/LatestUserPosts'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import ProfileLoading from '../ProfileLoading/ProfileLoading'
 
 
 const UserProfile = ({ user }) => {
-    if (!user) return <div className={styles.profileWrapper}>Loading...</div>
-    const { data: session } = useSession()
+    const [lodaing, setLoading] = useState(true)
 
+    if (!user) return <div className={styles.profileWrapper}>Loading...</div>
+    useEffect(() => {
+       setLoading(false) 
+    }, [])
+        
+    const { data: session } = useSession()
+    if (lodaing) return <ProfileLoading />
     return (
         <div className={styles.profileWrapper}>
             <img
@@ -22,9 +29,7 @@ const UserProfile = ({ user }) => {
             />
 
             <h1 className={styles.name}>{user.name}</h1>
-            <h1 className={styles.nameLatestTitle}>
-                {`${user.name}'s`} latest posts
-            </h1>
+
             <LatestUserPosts id={user.id} name={user.name} />
 
         </div>
