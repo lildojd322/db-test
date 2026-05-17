@@ -11,6 +11,8 @@
   }
 
 
+
+
   * {
     margin: 0;
     padding: 0;
@@ -305,13 +307,4 @@
   }
 
 
-  @media (hover: none) and (pointer: coarse) {
-    *:hover {
-      transform: none !important;
-      color: inherit !important;
-      background: inherit !important;
-      border-color: inherit !important;
-      box-shadow: none !important;
-    }
 
-  }

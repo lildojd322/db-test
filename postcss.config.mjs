@@ -1,7 +1,16 @@
 const config = {
   plugins: {
-    "@tailwindcss/postcss": {},
-  },
-};
+  
+    'postcss-hover-media-feature': {},
 
-export default config;
+    'postcss-preset-env': {
+      stage: 3,
+      features: {
+        'custom-properties': false,
+      },
+    },
+    'autoprefixer': {},
+  },
+}
+
+export default config
