@@ -5,6 +5,7 @@ import { authConfig } from "@/lib/auth"
 import { getServerSession } from "next-auth/next"
 import { deletePostById } from '../../lib/db'
 import DeleteButton from '../DeleteButton/DeleteButton'
+import Comments from '../Comments/Comments'
 
 const Post = async ({ post, user }) => {
     const session = await getServerSession(authConfig)
@@ -25,23 +26,27 @@ const Post = async ({ post, user }) => {
 
 
     return (
-        <div className={styles.postContainer}>
+        <>
 
-            <h1 className={styles.title}>{post.title}</h1>
-            <p className={styles.body}>{post.body}</p>
+            <div className={styles.postContainer}>
 
-            {isDeleted ? (
-                <pre className={styles.deletedUser}>Deleted user</pre>
-            ) : (
-                <Link href={`/user/${user.id}`} className={styles.authorLink}>
-                    <pre className={styles.authorName}>{authorName}</pre>
-                    <img src={authorImage} className={styles.avatar} alt="avatar" />
-                </Link>
-            )}
+                <h1 className={styles.title}>{post.title}</h1>
+                <p className={styles.body}>{post.body}</p>
 
-            <pre className={styles.meta}>created: {formattedDate}</pre>
-            {String(session?.user?.id) === String(user?.id) && <DeleteButton postId={post.id}> delete post </DeleteButton>}
-        </div>
+                {isDeleted ? (
+                    <pre className={styles.deletedUser}>Deleted user</pre>
+                ) : (
+                    <Link href={`/user/${user.id}`} className={styles.authorLink}>
+                        <pre className={styles.authorName}>{authorName}</pre>
+                        <img src={authorImage} className={styles.avatar} alt="avatar" />
+                    </Link>
+                )}
+
+                <pre className={styles.meta}>created: {formattedDate}</pre>
+                {String(session?.user?.id) === String(user?.id) && <DeleteButton postId={post.id}> delete post </DeleteButton>}
+            </div>
+            <Comments author={user} id={post.id} />
+        </>
     )
 }
 

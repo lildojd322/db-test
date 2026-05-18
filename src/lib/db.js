@@ -170,3 +170,31 @@ export async function getLinksFromDB() {
     const [rows] = await pool.execute('SELECT * FROM links')
     return rows
 }
+
+//comments
+
+export async function getCommentsFromDBByPostId(id) {
+    const [rows] = await pool.execute(`SELECT comments.*, 
+                users.name AS author_name, 
+                users.image AS author_avatar
+         FROM comments 
+         LEFT JOIN users ON comments.user_id = users.id
+         WHERE comments.post_id = ?
+         ORDER BY comments.created_at DESC`,
+        [id])
+    return rows
+}
+
+export async function getCountCommentsFromDBByPostId(id) {
+    const [rows] = await pool.execute('SELECT COUNT(*) AS count FROM comments WHERE post_id = ?', [id])
+    return rows[0]?.count || 0
+
+}
+
+export async function forwardCommentToDB(comment_text, post_id, user_id) {
+    await pool.execute(
+        'INSERT INTO comments (comment_text, post_id, user_id) VALUES (?, ?, ?)',
+        [comment_text, post_id, user_id]
+    )
+    return { success: true }
+}

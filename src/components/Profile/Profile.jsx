@@ -6,7 +6,7 @@ import styles from './Profile.module.scss'
 import getHighResImage from '../../hooks/getHighResImage'
 import defaultImage from '../../icons/avat.jpeg'
 import ChangeAvatar from '../ChangeAvatar/ChangeAvatar'
-import { useEffect, useState } from 'react'
+import { use, useEffect, useState } from 'react'
 import ProfileLoading from '../ProfileLoading/ProfileLoading'
 
 
@@ -36,11 +36,19 @@ const Profile = () => {
     }
 
     useEffect(() => {
+        if (user) {
+            setLoading(false)
+        }
+    }, [user])
+
+    useEffect(() => {
         if (user?.image) {
             setLoading(false)
             setUserImageUrl(user.image)
         }
     }, [user?.image])
+
+
     if (loading) return (<ProfileLoading />)
     return (
         <div className={styles.profileContainer}>
@@ -54,7 +62,7 @@ const Profile = () => {
                     <button className={styles.signOutButton} onClick={() => signOut({
                         callbackUrl: '/signin'
                     })} >sign out</button>
-                   
+
                 </>
             )
 
