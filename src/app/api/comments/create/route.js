@@ -1,13 +1,20 @@
 import { forwardCommentToDB } from '../../../../lib/db'
 import { NextResponse } from 'next/server'
-
+import { commentSchema } from '../../../../lib/zod'
 
 export async function POST(request) {
     try {
-        const { searchParams } = new URL(request.url)
-        const postId = searchParams.get('post_id')
-        const userId = searchParams.get('user_id')
-        const commentText = searchParams.get('post_text')
+        const body = await request.json()
+
+
+        const validation = commentSchema.safeParse(body)
+        if (!validation.success) {
+
+            console.log("backend Zod error:", validation.error.format())
+            return NextResponse.json({ error: "Invalid data format" }, { status: 400 })
+        }
+        const { post_id: postId, user_id: userId, comment_text: commentText } = validation.data
+
 
 
         if (!postId || !userId || !commentText) {

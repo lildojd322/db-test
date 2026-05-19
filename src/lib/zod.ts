@@ -18,3 +18,20 @@ export const postSchema = z.object({
     title: z.string().min(2, "The name must be at least 2 characters long").max(50, 'title is too long'),
     description: z.string().min(3, "The name must be at least 3 characters long").max(300, 'description is too long ')
 })
+
+export const commentSchema = z.object({
+
+    post_id: z.string().min(1, "Post ID is required"),
+
+
+    user_id: z.string().min(1, "User ID is required"),
+
+    comment_text: z.string()
+        .trim()
+        .min(1, "Comment cannot be empty")
+        .max(500, "Comment is too long (maximum 500 characters)")
+})
+
+export const idParamSchema = z.object({
+    id: z.coerce.number().int().positive("ID must be a positive integer")
+})

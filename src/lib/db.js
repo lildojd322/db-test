@@ -198,3 +198,7 @@ export async function forwardCommentToDB(comment_text, post_id, user_id) {
     )
     return { success: true }
 }
+
+export async function deleteCommentById(id) {
+    await pool.execute('DELETE FROM comments WHERE comment_id = ?', [id])
+}

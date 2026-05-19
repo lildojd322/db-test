@@ -1,14 +1,22 @@
 import { getCommentsFromDBByPostId, getCountCommentsFromDBByPostId } from '../../../../lib/db'
 import { NextResponse } from 'next/server'
+import { idParamSchema } from '../../../../lib/zod'
 export async function GET(request) {
     try {
         const { searchParams } = new URL(request.url)
-        const idString = searchParams.get('id')
-        const id = parseInt(idString, 10)
-        if (!id) {
-            return NextResponse.json({ error: "id required" }, { status: 400 })
-        }
 
+
+        const validation = idParamSchema.safeParse({
+            id: searchParams.get('id')
+        })
+
+
+        if (!validation.success) {
+
+            console.log("backend Zod error:", validation.error.format())
+            return NextResponse.json({ error: "Invalid data format" }, { status: 400 })
+        }
+        const { id } = validation.data
 
         const comments = await getCommentsFromDBByPostId(id)
         const countComments = await getCountCommentsFromDBByPostId(id)
