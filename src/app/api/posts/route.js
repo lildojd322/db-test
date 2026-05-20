@@ -1,13 +1,47 @@
 import { fetchPostsFromDB, getPostsFromDBByKeyword, fetchPostsFromDBById } from "@/lib/db"
 import { NextResponse } from "next/server"
+import { idParamSchema, offsetLimitSchema, keywordSchema } from '../../../lib/zod'
+
 
 export async function GET(request) {
     const { searchParams } = new URL(request.url)
-    const limit = parseInt(searchParams.get("limit")) || 20
-    const offset = parseInt(searchParams.get("offset")) || 0
-    const keyword = searchParams.get("keyword") || ""
-    const userId = searchParams.get("userId") || ""
 
+    const idValidation = idParamSchema.safeParse({
+        id: searchParams.get("userId") || ""
+    })
+
+    const limitOffsetValidation = offsetLimitSchema.safeParse({
+        limit: parseInt(searchParams.get("limit")) || 20,
+        offset: parseInt(searchParams.get("offset")) || 0
+    })
+
+
+    if (!limitOffsetValidation.success) {
+        return NextResponse.json({ error: "Invalid pagination" }, { status: 400 })
+    }
+
+    const { limit, offset } = limitOffsetValidation.data
+
+
+
+    let userId = null
+    if (idValidation.success) {
+        userId = idValidation.data.id
+    }
+
+
+
+    const keywordValidation = keywordSchema.safeParse({
+        keyword: searchParams.get("keyword") || ""
+    })
+
+    if (!keywordValidation.success) {
+        return NextResponse.json({
+            error: "Invalid keyword format"
+        }, { status: 400 })
+    }
+
+    const { keyword } = keywordValidation.data
 
     let posts = []
     try {

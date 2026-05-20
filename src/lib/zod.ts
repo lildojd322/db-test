@@ -35,3 +35,13 @@ export const commentSchema = z.object({
 export const idParamSchema = z.object({
     id: z.coerce.number().int().positive("ID must be a positive integer")
 })
+
+export const offsetLimitSchema = z.object({
+    offset: z.coerce.number().int().min(0, "offset must be 0 or greater"),
+    limit: z.coerce.number().int().min(1, "limit must be at least 1").max(100, "limit max 100"),
+})
+
+
+export const keywordSchema = z.object({
+    keyword: z.string().max(100).optional().default("")
+})
