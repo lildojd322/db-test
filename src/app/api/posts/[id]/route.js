@@ -16,7 +16,7 @@ export async function DELETE(request, { params }) {
             console.log("backend Zod error:", validation.error.format())
             return NextResponse.json({ error: "Invalid id format" }, { status: 400 })
         }
-        const id = Number(validation.data)
+const id = Number(validation.data.id)
 
 
         let result

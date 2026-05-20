@@ -17,8 +17,8 @@ export const GET = async (request) => {
             console.log("backend Zod error:", validation.error.format())
             return NextResponse.json({ error: "Invalid id format" }, { status: 400 })
         }
+        const userId = validation.data.id
 
-      
         const posts = await fetchLatestPostsFromDBById(userId)
         const countPosts = await fetchCountPostFromDBByUserId(userId)
         const data = [posts, countPosts]
