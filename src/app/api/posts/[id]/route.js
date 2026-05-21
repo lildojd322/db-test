@@ -1,11 +1,21 @@
-import { deletePostById } from "@/lib/db"
+import { deletePostById, fetchPostFromDBById } from "@/lib/db"
 import { NextResponse } from "next/server"
 import { idParamSchema } from '../../../../lib/zod'
+import { authConfig } from "@/lib/auth"
+import { getServerSession } from "next-auth/next"
+
 
 export async function DELETE(request, { params }) {
 
 
     try {
+        const session = await getServerSession(authConfig)
+
+        if (!session.user) {
+            return NextResponse.json({ error: "The user is not authorized" }, { status: 401 })
+        }
+
+
         const resolvedParams = await params
         const validation = idParamSchema.safeParse({
             id: resolvedParams.id
@@ -16,10 +26,19 @@ export async function DELETE(request, { params }) {
             console.log("backend Zod error:", validation.error.format())
             return NextResponse.json({ error: "Invalid id format" }, { status: 400 })
         }
-const id = Number(validation.data.id)
+        const id = Number(validation.data.id)
+
+
 
 
         let result
+
+        let post = await fetchPostFromDBById(id)
+
+
+        if (String(session.user.id) !== String(post.userId)) {
+            return NextResponse.json({ error: "wrong user" }, { status: 403 })
+        }
 
 
         result = await deletePostById(id)
@@ -34,11 +53,11 @@ const id = Number(validation.data.id)
             affectedRows: result.affectedRows
         })
 
-    
+
 
 
 
     } catch (error) {
-    return NextResponse.json({ error: "db error" }, { status: 500 })
-}
+        return NextResponse.json({ error: "db error" }, { status: 500 })
+    }
 }   

@@ -19,11 +19,15 @@ export const POST = async (request) => {
         const userId = session.user.id
 
         const body = await request.json()
+
+
         const { description, title } = postSchema.parse(body)
 
 
 
-        await forwardPostToDB(title, description, userEmail, userName,userId)
+
+
+        await forwardPostToDB(title, description, userEmail, userName, userId)
         return NextResponse.json({
             message: "post created successfully",
             success: true

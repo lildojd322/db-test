@@ -185,6 +185,18 @@ export async function getCommentsFromDBByPostId(id) {
     return rows
 }
 
+export async function fetchCommentFromDBById(comment_id) {
+    const [rows] = await pool.execute(
+        `SELECT * FROM comments 
+         WHERE comment_id =  ?
+         LIMIT 1`,
+        [comment_id]
+    )
+
+
+    return rows[0]
+}
+
 export async function getCountCommentsFromDBByPostId(id) {
     const [rows] = await pool.execute('SELECT COUNT(*) AS count FROM comments WHERE post_id = ?', [id])
     return rows[0]?.count || 0
