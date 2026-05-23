@@ -1,0 +1,73 @@
+.commentForm {
+    display: flex;
+    gap: 0.75rem;
+    width: 100%;
+
+    textarea {
+        flex: 1;
+        transition: height 0.1s ease;
+        resize: none;
+        background: var(--background);
+        border: none;
+        color: var(--foreground);
+        border-bottom: 1px solid var(--border);
+
+        font-size: 1rem;
+        outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        width: 100%;
+        min-height: 40px;
+        padding: 0.75rem 1rem;
+        resize: none;
+        field-sizing: content;
+
+        &:focus {
+            border-bottom: 1px solid var(--primary);
+
+
+        }
+
+        &::placeholder {
+            color: var(--foreground);
+            opacity: 0.5;
+        }
+    }
+
+    button {
+        background: var(--primary);
+        color: #ffffff;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 6px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s;
+
+        &:hover {
+            background: var(--primary-hover);
+        }
+        &:disabled {
+            opacity: 0.5;
+             cursor: not-allowed;
+        pointer-events: none;
+        }
+    }
+}
+
+
+
+
+@media (max-width: 768px) {
+
+
+    .commentForm {
+        flex-direction: column;
+
+        button {
+            width: 100%;
+        }
+    }
+
+
+}

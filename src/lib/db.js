@@ -174,14 +174,18 @@ export async function getLinksFromDB() {
 //comments
 
 export async function getCommentsFromDBByPostId(id) {
-    const [rows] = await pool.execute(`SELECT comments.*, 
+    const [rows] = await pool.execute(
+        `SELECT comments.*, 
                 users.name AS author_name, 
                 users.image AS author_avatar
          FROM comments 
          LEFT JOIN users ON comments.user_id = users.id
          WHERE comments.post_id = ?
-         ORDER BY comments.created_at DESC`,
-        [id])
+         ORDER BY COALESCE(comments.parent_comment_id, comments.comment_id) DESC, 
+                  comments.parent_comment_id IS NOT NULL ASC, 
+                  comments.created_at ASC`,
+        [id]
+    )
     return rows
 }
 

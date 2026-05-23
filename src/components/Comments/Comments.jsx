@@ -8,6 +8,9 @@ import { useRouter } from 'next/navigation'
 import defaulImage from '../../icons/avat.jpeg'
 import { commentSchema } from '../../lib/zod'
 
+import Answer from '../Answer/Answer'
+import CreateCommentForm from '../CreateCommentForm/CreateCommentForm'
+
 
 
 const Comments = ({ id, author }) => {
@@ -15,6 +18,8 @@ const Comments = ({ id, author }) => {
     const [countComments, setCountComments] = useState(0)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
+
+
 
     const router = useRouter()
     const session = useSession()
@@ -45,25 +50,15 @@ const Comments = ({ id, author }) => {
     }, [id])
 
 
-    const handleKeyDown = (event) => {
-        if (event.key === 'Enter' && !event.shiftKey) {
-            event.preventDefault()
 
-            const form = event.currentTarget.form
-            if (form) {
-                form.requestSubmit()
-            }
-        }
-
-    }
-
-    const handleSubmit = (event) => {
+    const handleAction = (event) => {
         event.preventDefault()
         if (session.status !== "authenticated") {
 
             router.push('/signin')
             return
         }
+
 
 
 
@@ -107,6 +102,8 @@ const Comments = ({ id, author }) => {
 
     }
 
+
+
     const handleDelete = (id) => {
 
         fetch(`/api/comments/delete?id=${id}`, {
@@ -128,10 +125,7 @@ const Comments = ({ id, author }) => {
         <div className={styles.discussionContainer}>
             <h1>discussion</h1>
 
-            <form className={styles.commentForm} onSubmit={handleSubmit}>
-                <textarea onKeyDown={handleKeyDown} name="comment_text" type="text" placeholder="leave a comment"></textarea>
-                <button type="submit">Send</button>
-            </form>
+            <CreateCommentForm handleAction={handleAction} />
 
             <div className={styles.commentsSection}>
                 <h2>Total comments: {countComments}</h2>
@@ -171,6 +165,10 @@ const Comments = ({ id, author }) => {
 
                             <div className={styles.commentText}>
                                 {comment.comment_text}
+                            </div>
+                            <div className={styles.interactionBlock}>
+                                <Answer handleAction={handleAction} />
+
                             </div>
                         </li>
                     }) : <h2 style={{ fontStyle: 'italic' }}>no comments</h2>}
