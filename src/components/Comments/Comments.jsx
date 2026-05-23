@@ -51,8 +51,10 @@ const Comments = ({ id, author }) => {
 
 
 
-    const handleAction = (event) => {
+    const handleAction = (event, parentId = '') => {
         event.preventDefault()
+
+
         if (session.status !== "authenticated") {
 
             router.push('/signin')
@@ -68,7 +70,7 @@ const Comments = ({ id, author }) => {
 
         data.post_id = String(id)
         data.user_id = String(session?.data?.user?.id || '')
-
+        data.parent_comment_id = parentId ? String(parentId) : null
 
         const validation = commentSchema.safeParse(data)
 
@@ -133,10 +135,10 @@ const Comments = ({ id, author }) => {
 
 
                     {countComments > 0 ? comments.map((comment) => {
-                        return <li key={comment.comment_id}>
+                        return <li style={{ marginLeft: comment.parent_comment_id ? '55px' : '0px' }} key={comment.comment_id}>
                             <div className={styles.justInfoBlock}>
                                 <div className={styles.info}>
-                                    <Link href={`/user/${comment.user_id}`} className={styles.authorInfo}>
+                                    <Link href={`/ user / ${comment.user_id}`} className={styles.authorInfo}>
                                         <img width={50} height={50} src={comment.author_avatar || defaulImage.src} className={styles.authorAvatar}>
 
                                         </img>
@@ -164,10 +166,12 @@ const Comments = ({ id, author }) => {
                             </div>
 
                             <div className={styles.commentText}>
-                                {comment.comment_text}
+                                {comment.parent_comment_id && <Link className={styles.parentAuthor} style={{marginRight: '5px'}} href={`/user/${comment.parent_author_id}`}> @{comment.parent_author_name} </Link>}  
+                                   {comment.comment_text}
                             </div>
                             <div className={styles.interactionBlock}>
-                                <Answer handleAction={handleAction} />
+
+                                <Answer parentId={comment.comment_id} handleAction={handleAction} />
 
                             </div>
                         </li>

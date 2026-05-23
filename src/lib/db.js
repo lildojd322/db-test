@@ -175,15 +175,21 @@ export async function getLinksFromDB() {
 
 export async function getCommentsFromDBByPostId(id) {
     const [rows] = await pool.execute(
-        `SELECT comments.*, 
-                users.name AS author_name, 
-                users.image AS author_avatar
-         FROM comments 
-         LEFT JOIN users ON comments.user_id = users.id
-         WHERE comments.post_id = ?
-         ORDER BY COALESCE(comments.parent_comment_id, comments.comment_id) DESC, 
-                  comments.parent_comment_id IS NOT NULL ASC, 
-                  comments.created_at ASC`,
+        `SELECT 
+    comments.*,
+    users.name AS author_name,
+    users.image AS author_avatar,
+
+    parent_comment.user_id AS parent_author_id,
+    parent_user.name AS parent_author_name
+FROM comments 
+LEFT JOIN users ON comments.user_id = users.id
+LEFT JOIN comments AS parent_comment ON comments.parent_comment_id = parent_comment.comment_id
+LEFT JOIN users AS parent_user ON parent_comment.user_id = parent_user.id
+WHERE comments.post_id = ?
+ORDER BY COALESCE(comments.parent_comment_id, comments.comment_id) DESC, 
+         comments.parent_comment_id IS NOT NULL ASC, 
+         comments.created_at ASC`,
         [id]
     )
     return rows
@@ -207,14 +213,14 @@ export async function getCountCommentsFromDBByPostId(id) {
 
 }
 
-export async function forwardCommentToDB(comment_text, post_id, user_id) {
+export async function forwardCommentToDB(comment_text, post_id, user_id, parent_comment_id) {
     await pool.execute(
-        'INSERT INTO comments (comment_text, post_id, user_id) VALUES (?, ?, ?)',
-        [comment_text, post_id, user_id]
+        'INSERT INTO comments (comment_text, post_id, user_id, parent_comment_id) VALUES (?, ?, ?, ?)',
+        [comment_text, post_id, user_id, parent_comment_id]
     )
     return { success: true }
 }
 
 export async function deleteCommentById(id) {
     await pool.execute('DELETE FROM comments WHERE comment_id = ?', [id])
-}
+}   

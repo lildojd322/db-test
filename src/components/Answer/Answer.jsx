@@ -3,7 +3,7 @@
 import { useRef, useState } from 'react'
 import styles from './Answer.module.scss'
 
-const Answer = ({ handleAction }) => {
+const Answer = ({ handleAction, parentId }) => {
     const [isOpen, setIsOpen] = useState(false)
     const [text, setText] = useState('')
     const areaRef = useRef(null)
@@ -18,9 +18,21 @@ const Answer = ({ handleAction }) => {
         changeStatus()
     }
 
+
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault()
+
+            const form = event.currentTarget.form
+            if (form) {
+                form.requestSubmit()
+            }
+        }
+
+    }
     const handleSubmit = async (event) => {
         event.preventDefault()
-      await  handleAction(event)
+        await handleAction(event, parentId)
         setText('')
     }
 
@@ -29,11 +41,11 @@ const Answer = ({ handleAction }) => {
         <>
 
             {isOpen ? <form onSubmit={handleSubmit} className={styles.answerForm}>
-                <textarea value={text} onChange={(e) => {
+                <textarea onKeyDown={handleKeyDown} value={text} onChange={(e) => {
                     setText(e.target.value)
                 }} autoFocus ref={areaRef} className={styles.textarea} name="comment_text" type="text" placeholder="leave a answer"></textarea>
                 <div>
-                    <button onClick={handleClick } type='click' className={styles.cancelAnswerButton}>cancel</button>
+                    <button onClick={handleClick} type='click' className={styles.cancelAnswerButton}>cancel</button>
                     <button disabled={!text.trim()} type='submit' className={styles.sendAnswerButton}> send</button>
 
                 </div>

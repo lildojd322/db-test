@@ -169,6 +169,14 @@
 
 .interactionBlock {}
 
+
+.parentAuthor {
+    opacity: 0.9;
+    border-radius: 3px;
+    background-color: var(--foreground);
+    color: var(--card-bg    );
+}
+
 @media (max-width: 768px) {
     .discussionContainer {
         margin: 1.5rem auto;

@@ -19,7 +19,7 @@ export async function POST(request) {
             return NextResponse.json({ error: "Invalid data format" }, { status: 400 })
         }
 
-        const { post_id: postId, comment_text: commentText } = validation.data
+        const { post_id: postId, comment_text: commentText, parent_comment_id: parentId = null } = validation.data
 
 
         const session = await getServerSession(authConfig)
@@ -32,9 +32,8 @@ export async function POST(request) {
 
 
 
-
-
-        await forwardCommentToDB(commentText, postId, userId)
+        
+        await forwardCommentToDB(commentText, postId, userId, parentId)
 
 
         return NextResponse.json({
