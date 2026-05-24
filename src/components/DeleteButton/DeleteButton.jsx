@@ -17,7 +17,7 @@ const DeleteButton = ({ children, postId }) => {
         
         await fetch(`/api/posts/${postId}`, { method: 'DELETE' })
         router.refresh()
-        router.push('/blog')
+         router.back() 
     }
 
     const changeModalStatus = () => {
