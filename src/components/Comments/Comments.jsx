@@ -138,7 +138,7 @@ const Comments = ({ id, author }) => {
                         return <li style={{ marginLeft: comment.parent_comment_id ? '55px' : '0px' }} key={comment.comment_id}>
                             <div className={styles.justInfoBlock}>
                                 <div className={styles.info}>
-                                    <Link href={`/ user / ${comment.user_id}`} className={styles.authorInfo}>
+                                    <Link href={`/user/${comment.user_id}`} className={styles.authorInfo}>
                                         <img width={50} height={50} src={comment.author_avatar || defaulImage.src} className={styles.authorAvatar}>
 
                                         </img>
@@ -159,15 +159,15 @@ const Comments = ({ id, author }) => {
                                         }
                                     </div>
                                 </div>
-                                {String(comment.user_id) === String(session.data.user.id) && <button onClick={() => {
+                                {session?.data?.user && String(comment.user_id) === String(session.data.user.id) && <button onClick={() => {
                                     handleDelete(comment.comment_id)
                                 }} className={styles.deleteButton}>delete</button>}
 
                             </div>
 
                             <div className={styles.commentText}>
-                                {comment.parent_comment_id && <Link className={styles.parentAuthor} style={{marginRight: '5px'}} href={`/user/${comment.parent_author_id}`}> @{comment.parent_author_name} </Link>}  
-                                   {comment.comment_text}
+                                {comment.parent_comment_id && <Link className={styles.parentAuthor} style={{ marginRight: '5px' }} href={`/user/${comment.parent_author_id}`}> @{comment.parent_author_name} </Link>}
+                                {comment.comment_text}
                             </div>
                             <div className={styles.interactionBlock}>
 

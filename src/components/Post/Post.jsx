@@ -13,6 +13,7 @@ const Post = async ({ post, user }) => {
     const authorName = user?.name || 'Deleted user'
     const authorImage = user?.image || defaultImage.src
     const isDeleted = !user
+ 
 
 
     const formattedDate = new Date(post.created_at).toLocaleDateString('en-EN', {
