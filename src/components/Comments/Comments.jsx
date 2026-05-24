@@ -135,7 +135,7 @@ const Comments = ({ id, author }) => {
 
 
                     {countComments > 0 ? comments.map((comment) => {
-                        return <li style={{ marginLeft: comment.parent_comment_id ? '55px' : '0px' }} key={comment.comment_id}>
+                        return <li style={{ marginLeft: comment.parent_comment_id ? '45px' : '0px' }} key={comment.comment_id}>
                             <div className={styles.justInfoBlock}>
                                 <div className={styles.info}>
                                     <Link href={`/user/${comment.user_id}`} className={styles.authorInfo}>
