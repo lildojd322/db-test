@@ -102,10 +102,24 @@
 
 
 
+@media (pointer: coarse) {
+  
+    .button {
+
+        background-color: var(--border);
+    }
+}
+
 @media (max-width: 768px) {
 
+    
+.button {
+        
+        background-color: var(--border);
+    }
     .answerForm,
     .button {
+
         margin: 1.5rem auto;
     }
 
