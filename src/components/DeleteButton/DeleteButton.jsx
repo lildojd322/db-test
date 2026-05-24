@@ -14,10 +14,10 @@ const DeleteButton = ({ children, postId }) => {
     const router = useRouter()
 
     const handleClick = async () => {
-        
+
         await fetch(`/api/posts/${postId}`, { method: 'DELETE' })
         router.refresh()
-         router.back() 
+        router.back()
     }
 
     const changeModalStatus = () => {
