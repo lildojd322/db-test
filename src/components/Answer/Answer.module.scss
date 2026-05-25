@@ -103,7 +103,7 @@
 
 
 @media (pointer: coarse) {
-  
+
     .button {
 
         background-color: var(--border);
@@ -112,11 +112,12 @@
 
 @media (max-width: 768px) {
 
-    
-.button {
-        
+
+    .button {
+
         background-color: var(--border);
     }
+
     .answerForm,
     .button {
 
