@@ -8,7 +8,8 @@ import defaultImage from '../../icons/avat.jpeg'
 import ChangeAvatar from '../ChangeAvatar/ChangeAvatar'
 import { use, useEffect, useState } from 'react'
 import ProfileLoading from '../ProfileLoading/ProfileLoading'
-
+import AreYouSureModal from '../AreYouSureModal/AreYouSureModal'
+import { useRouter } from 'next/navigation'
 
 const Profile = () => {
     const { data: session, update } = useSession()
@@ -16,6 +17,8 @@ const Profile = () => {
     const [userImageUrl, setUserImageUrl] = useState(user?.image || defaultImage.src)
     const provider = user?.provider
     const [loading, setLoading] = useState(true)
+    const [isModalOpen, setIsModalOpen] = useState(false)
+
 
     const onAvatarChange = async (file) => {
         const formData = new FormData()
@@ -49,6 +52,27 @@ const Profile = () => {
     }, [user?.image])
 
 
+    const handleClick = async () => {
+        fetch(`/api/users/deleteUser?id=${user?.id}`, {
+            method: 'DELETE'
+        })
+            .then(res => res.json())
+            .then(data => {
+                signOut({
+                    callbackUrl: '/signin'
+                })
+                return
+            })
+            .catch(err => {
+                console.error("error:", err)
+                setLoading(false)
+            })
+    }
+    const changeModalStatus = () => {
+        isModalOpen ? setIsModalOpen(false) : setIsModalOpen(true)
+
+    }
+
     if (loading) return (<ProfileLoading />)
     return (
         <div className={styles.profileContainer}>
@@ -59,9 +83,14 @@ const Profile = () => {
                         {provider === 'google' ? '' : <ChangeAvatar onAvatarChange={onAvatarChange} />}
                     </div>
                     <h1 className={styles.username}> {user?.name}</h1>
-                    <button className={styles.signOutButton} onClick={() => signOut({
-                        callbackUrl: '/signin'
-                    })} >sign out</button>
+                    <div className={styles.buttonContainer}>
+                        <button className={styles.signOutButton} onClick={() => signOut({
+                            callbackUrl: '/signin'
+                        })} >sign out</button>
+                        {user?.id === session?.user?.id && <button onClick={changeModalStatus} className={styles.signOutButton}>delete account</button>}
+
+                        {isModalOpen && <AreYouSureModal changeModalStatus={changeModalStatus} handleClick={handleClick} />}
+                    </div>
 
                 </>
             )

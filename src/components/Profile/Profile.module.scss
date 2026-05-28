@@ -16,7 +16,7 @@
 
 .signOutButton {
     color: var(--foreground);
-    font-size: 1rem;
+    font-size: 15px;
     font-weight: 500;
     padding: 0.75rem 1.5rem;
     border-radius: 0.5rem;
@@ -25,7 +25,8 @@
     border: 1px solid rgba(220, 38, 38, 0.3);
     cursor: pointer;
     margin-top: 35px;
-    width: fit-content;
+    width: 110px;
+
 
     &:hover {
         background-color: rgba(220, 38, 38, 0.5);
@@ -36,6 +37,12 @@
     &:active {
         transform: translateY(0);
     }
+}
+
+
+.buttonContainer {
+    display: flex;
+    gap: 15px;
 }
 
 .username {
@@ -49,6 +56,11 @@
 }
 
 @media (max-width: 359px) {
+.signOutButton {
+    width: 80px;
+  font-size: 10px;
+}
+
 
 .profileContainer {
   

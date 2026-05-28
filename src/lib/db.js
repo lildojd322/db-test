@@ -8,8 +8,8 @@ const dbConfig = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     ssl: {
-    rejectUnauthorized: false
-  }
+        rejectUnauthorized: false
+    }
 }
 
 if (!global.mysqlPool || global.mysqlPool._closed) {
@@ -165,6 +165,15 @@ export async function updateUserAvatarByEmail(email, url) {
         [url, email]
     )
 }
+
+
+export async function deleteUserById(id) {
+    await pool.execute(
+        'delete from users where id = ?',
+        [id]
+    )
+}
+
 
 //links
 
