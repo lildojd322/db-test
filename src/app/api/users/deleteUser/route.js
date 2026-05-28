@@ -8,7 +8,7 @@ import { getServerSession } from "next-auth/next"
 export async function DELETE(request) {
     const session = await getServerSession(authConfig)
     try {
-
+        console.log(session.user)
         if (!session.user) {
             return NextResponse.json({ error: "The user is not authorized" }, { status: 401 })
         }
@@ -26,15 +26,17 @@ export async function DELETE(request) {
             return NextResponse.json({ error: "Invalid data format" }, { status: 400 })
         }
         const { id } = validation.data
-       
+
         const currentUser = await getUserFromDBById(Number(id))
         console.log(currentUser)
 
-        if (currentUser.id !== session.user.id) {
+        if (Number(currentUser.id) !== Number(session.user.id)) {
             return NextResponse.json({ error: "wrong user" }, { status: 403 })
         }
 
-        await deleteUserById(Number(id))
+        const result = await deleteUserById(Number(id))
+        console.log('Result:', result)
+
         return NextResponse.json({
             message: "comments deleted successfully",
             success: true,

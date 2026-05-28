@@ -51,6 +51,7 @@ const Profile = () => {
         }
     }, [user?.image])
 
+    console.log(user?.id)
 
     const handleClick = async () => {
         fetch(`/api/users/deleteUser?id=${user?.id}`, {
