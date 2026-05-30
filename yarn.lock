@@ -393,6 +393,33 @@
     "@parcel/watcher-win32-ia32" "2.5.6"
     "@parcel/watcher-win32-x64" "2.5.6"
 
+"@redis/bloom@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.npmjs.org/@redis/bloom/-/bloom-6.0.0.tgz"
+  integrity sha512-P0n5NkV9IIdT6nYXOfMHG83sho8pE7Nay7yw27wOGVLv4DthgvzebpGz6m7VuMTizeJmw3LPw2Xek5wFUhGpVw==
+
+"@redis/client@^6.0.0", "@redis/client@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.npmjs.org/@redis/client/-/client-6.0.0.tgz"
+  integrity sha512-NS4iIT25r24sAjNQ2nSRdCW5jPJoV0rxkBee27oTeR+RXaOu89cjIsrww5rPBaYVGVdL1QCx9uz9141gZiSKdQ==
+  dependencies:
+    cluster-key-slot "1.1.2"
+
+"@redis/json@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.npmjs.org/@redis/json/-/json-6.0.0.tgz"
+  integrity sha512-F+eqFfgPcy57Zs1KW7UtLnBtRk6lxAUIoe7dyZerpm6e+ssYXG/dWJrbrHFYs0b7tt6QBtYpVuukBuM9XqhUAg==
+
+"@redis/search@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.npmjs.org/@redis/search/-/search-6.0.0.tgz"
+  integrity sha512-VHuCJ2W0YWFixGZh/l//8JiyOsD4gN+NhjdRAGIoUe0UQ4mtq1NyY2ZJ973XT+vYhaU21XdK8r8oNrd5n7wbzQ==
+
+"@redis/time-series@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.npmjs.org/@redis/time-series/-/time-series-6.0.0.tgz"
+  integrity sha512-QWhkYsg+3lhBrBf+cbzybtV8LQcSrk7iXIgTaGU+pHNFTkql7TpVRE24ROS6M2ybVIV6O/zxTqfxgxxYiqyw0Q==
+
 "@rtsao/scc@^1.1.0":
   version "1.1.0"
   resolved "https://registry.npmjs.org/@rtsao/scc/-/scc-1.1.0.tgz"
@@ -498,6 +525,13 @@
   dependencies:
     csstype "^3.2.2"
 
+"@types/redis@^4.0.10":
+  version "4.0.10"
+  resolved "https://registry.npmjs.org/@types/redis/-/redis-4.0.10.tgz"
+  integrity sha512-7CLy5b5fzzEGVcOccgZjoMlNpPhX6d10jEeRy2YWbFuaMNrSPc9ExRsMYsd+0VxvEHucf4EWx24Ja7cSU1FGUA==
+  dependencies:
+    redis "*"
+
 "@typescript-eslint/eslint-plugin@8.59.0":
   version "8.59.0"
   resolved "https://registry.npmjs.org/@typescript-eslint/eslint-plugin/-/eslint-plugin-8.59.0.tgz"
@@ -598,6 +632,13 @@
   version "1.11.1"
   resolved "https://registry.npmjs.org/@unrs/resolver-binding-win32-x64-msvc/-/resolver-binding-win32-x64-msvc-1.11.1.tgz"
   integrity sha512-lrW200hZdbfRtztbygyaq/6jP6AKE8qQN2KvPcJ+x7wiD038YtnYtZ82IMNJ69GJibV7bwL3y9FgK+5w/pYt6g==
+
+"@upstash/redis@^1.38.0":
+  version "1.38.0"
+  resolved "https://registry.npmjs.org/@upstash/redis/-/redis-1.38.0.tgz"
+  integrity sha512-wu+dZBptlLy0+MCUEoHmzrY/TnmgDey3+c7EbIGwrLqAvkP8yi5MWZHYGIFtAygmL4Bkz2TdFu+eU0vFPncIcg==
+  dependencies:
+    uncrypto "^0.1.3"
 
 acorn-jsx@^5.3.2:
   version "5.3.2"
@@ -881,6 +922,11 @@ cloudinary@^2.10.0:
   integrity sha512-sY09kYg7wprkndAOjZBAYqFZqwL+SxnEGcAvksOvFA+5upnFn949UjkEkHKNSwkBtW/xRDd0p6NgbSXZcxkI3w==
   dependencies:
     lodash "^4.17.23"
+
+cluster-key-slot@1.1.2:
+  version "1.1.2"
+  resolved "https://registry.npmjs.org/cluster-key-slot/-/cluster-key-slot-1.1.2.tgz"
+  integrity sha512-RMr0FhtfXemyinomL4hrWcYJxmX6deFdCxpJzhDttxgO1+bcCnkk+9drydLVDmAMG7NE6aN/fl4F7ucU/90gAA==
 
 color-convert@^2.0.1:
   version "2.0.1"
@@ -2513,6 +2559,17 @@ readdirp@^4.0.1:
   resolved "https://registry.npmjs.org/readdirp/-/readdirp-4.1.2.tgz"
   integrity sha512-GDhwkLfywWL2s6vEjyhri+eXmfH6j1L7JE27WhqLeYzoh/A3DBaYGEj2H/HFZCn/kMfim73FXxEJTw06WtxQwg==
 
+redis@*:
+  version "6.0.0"
+  resolved "https://registry.npmjs.org/redis/-/redis-6.0.0.tgz"
+  integrity sha512-n9Thfc39OXleEoPT2k5gwKsqY+HfCww3YS71ofcr9KKbkn89bpjU9dToIlD+JRdM3/GYQkwMtVgTxLyed+LptQ==
+  dependencies:
+    "@redis/bloom" "6.0.0"
+    "@redis/client" "6.0.0"
+    "@redis/json" "6.0.0"
+    "@redis/search" "6.0.0"
+    "@redis/time-series" "6.0.0"
+
 reflect.getprototypeof@^1.0.6, reflect.getprototypeof@^1.0.9:
   version "1.0.10"
   resolved "https://registry.npmjs.org/reflect.getprototypeof/-/reflect.getprototypeof-1.0.10.tgz"
@@ -2995,6 +3052,11 @@ unbox-primitive@^1.1.0:
     has-bigints "^1.0.2"
     has-symbols "^1.1.0"
     which-boxed-primitive "^1.1.1"
+
+uncrypto@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.npmjs.org/uncrypto/-/uncrypto-0.1.3.tgz"
+  integrity sha512-Ql87qFHB3s/De2ClA9e0gsnS6zXG27SkTiSJwjCc9MebbfapQfuPzumMIUMi38ezPZVNFcHI9sUIepeQfw8J8Q==
 
 undici-types@~6.21.0:
   version "6.21.0"
