@@ -1,5 +1,7 @@
 import mysql from 'mysql2/promise'
 import { hash } from 'bcryptjs'
+import { cache } from 'react'
+
 
 const dbConfig = {
     host: process.env.DB_HOST,
@@ -20,9 +22,9 @@ const pool = global.mysqlPool
 
 // posts
 
-export async function fetchPostsFromDB(limit = 20, offset = 0) {
+export const fetchPostsFromDB = cache(async (limit = 20, offset = 0) => {
     const [rows] = await pool.execute(
-        `SELECT posts.*, 
+        `SELECT posts.*,  
                 COALESCE(users.name, 'Deleted User') AS author_name
          FROM posts 
          LEFT JOIN users ON posts.userId = users.id
@@ -30,9 +32,9 @@ export async function fetchPostsFromDB(limit = 20, offset = 0) {
          LIMIT ${parseInt(limit)} OFFSET ${parseInt(offset)}`
     )
     return rows
-}
+})
 
-export async function fetchPostFromDBById(id) {
+export const fetchPostFromDBById = cache(async (id) => {
     const [rows] = await pool.execute(
         `SELECT posts.*, 
                 COALESCE(users.name, 'Deleted User') AS author_name
@@ -42,9 +44,9 @@ export async function fetchPostFromDBById(id) {
         [id]
     )
     return rows[0]
-}
+})
 
-export async function fetchLatestPostFromDB() {
+export const fetchLatestPostFromDB = cache(async () => {
     const [rows] = await pool.execute(
         `SELECT posts.*, 
                 COALESCE(users.name, 'Deleted User') AS author_name
@@ -54,19 +56,19 @@ export async function fetchLatestPostFromDB() {
          LIMIT 3`
     )
     return rows
-}
+})
 
-export async function fetchCountPostFromDB() {
+export const fetchCountPostFromDB = cache(async () => {
     const [rows] = await pool.execute('SELECT COUNT(*) AS count FROM posts')
     return rows[0].count
-}
+})
 
-export async function fetchCountPostFromDBByKeyword(keyword) {
+export const fetchCountPostFromDBByKeyword = cache(async (keyword) => {
     const [rows] = await pool.execute('SELECT COUNT(*) AS count FROM posts WHERE title LIKE ?', [`%${keyword}%`])
     return rows[0].count
-}
+})
 
-export async function getPostsFromDBByKeyword(keyword, limit = 20, offset = 0) {
+export const getPostsFromDBByKeyword = cache(async (keyword, limit = 20, offset = 0) => {
     const [rows] = await pool.execute(
         `SELECT posts.*, 
                 COALESCE(users.name, 'Deleted User') AS author_name
@@ -78,15 +80,15 @@ export async function getPostsFromDBByKeyword(keyword, limit = 20, offset = 0) {
         [`%${keyword}%`]
     )
     return rows
-}
+})
 
-export async function fetchLatestPostsFromDBById(userId) {
+export const fetchLatestPostsFromDBById = cache(async (userId) => {
     const [rows] = await pool.execute(
         'SELECT * FROM posts WHERE userId = ? ORDER BY created_at DESC LIMIT 3',
         [userId]
     )
     return rows
-}
+})
 
 export async function forwardPostToDB(title, description, email, name, userId) {
     await pool.execute(
@@ -100,12 +102,12 @@ export async function deletePostById(id) {
     await pool.execute('DELETE FROM posts WHERE id = ?', [id])
 }
 
-export async function fetchCountPostFromDBByUserId(userId) {
+export const fetchCountPostFromDBByUserId = cache(async (userId) => {
     const [rows] = await pool.execute('SELECT COUNT(*) AS count FROM posts WHERE userId = ?', [userId])
     return rows[0].count
-}
+})
 
-export async function fetchPostsFromDBById(userId, limit = 20, offset = 0) {
+export const fetchPostsFromDBById = cache(async (userId, limit = 20, offset = 0) => {
     const [rows] = await pool.execute(
         `SELECT * FROM posts 
          WHERE userId = ? 
@@ -114,34 +116,35 @@ export async function fetchPostsFromDBById(userId, limit = 20, offset = 0) {
         [userId]
     )
     return rows
-}
-export async function fetchCountPostFromDBById(userId) {
+})
+
+export const fetchCountPostFromDBById = cache(async (userId) => {
     const [rows] = await pool.execute(
         `SELECT COUNT(*) AS count FROM posts WHERE userId = ?`,
         [userId]
     )
     return rows[0].count || 0
-}
+})
 
 
 
 
 // users
 
-export async function getUsersFromDB() {
+export const getUsersFromDB = cache(async () => {
     const [rows] = await pool.execute('SELECT * FROM users')
     return rows
-}
+})
 
-export async function getUserFromDBByEmail(email) {
+export const getUserFromDBByEmail = cache(async (email) => {
     const [rows] = await pool.execute('SELECT * FROM users WHERE email = ?', [email])
     return rows[0]
-}
+})
 
-export async function getUserFromDBById(id) {
+export const getUserFromDBById = cache(async (id) => {
     const [rows] = await pool.execute('SELECT * FROM users WHERE id = ?', [id])
     return rows[0]
-}
+})
 
 export async function forwardUserToDB(email, password, name) {
     const hashedPassword = await hash(password, 10)
@@ -177,14 +180,14 @@ export async function deleteUserById(id) {
 
 //links
 
-export async function getLinksFromDB() {
+export const getLinksFromDB = cache(async () => {
     const [rows] = await pool.execute('SELECT * FROM links')
     return rows
-}
+})
 
 //comments
 
-export async function getCommentsFromDBByPostId(id) {
+export const getCommentsFromDBByPostId = cache(async (id) => {
     const [rows] = await pool.execute(
         `SELECT 
             comments.*,
@@ -207,9 +210,9 @@ export async function getCommentsFromDBByPostId(id) {
         [id]
     )
     return rows
-}
+})
 
-export async function fetchCommentFromDBById(comment_id) {
+export const fetchCommentFromDBById = cache(async (comment_id) => {
     const [rows] = await pool.execute(
         `SELECT * FROM comments 
          WHERE comment_id =  ?
@@ -219,13 +222,13 @@ export async function fetchCommentFromDBById(comment_id) {
 
 
     return rows[0]
-}
+})
 
-export async function getCountCommentsFromDBByPostId(id) {
+export const getCountCommentsFromDBByPostId = cache(async (id) => {
     const [rows] = await pool.execute('SELECT COUNT(*) AS count FROM comments WHERE post_id = ?', [id])
     return rows[0]?.count || 0
 
-}
+})
 
 export async function forwardCommentToDB(comment_text, post_id, user_id, parent_comment_id) {
     await pool.execute(
@@ -237,4 +240,4 @@ export async function forwardCommentToDB(comment_text, post_id, user_id, parent_
 
 export async function deleteCommentById(id) {
     await pool.execute('DELETE FROM comments WHERE comment_id = ?', [id])
-}   
+}
