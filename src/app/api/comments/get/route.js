@@ -18,8 +18,10 @@ export async function GET(request) {
         }
         const { id } = validation.data
 
-        const comments = await getCommentsFromDBByPostId(id)
-        const countComments = await getCountCommentsFromDBByPostId(id)
+        const commentsPromise = getCommentsFromDBByPostId(id)
+        const countCommentsPromise = getCountCommentsFromDBByPostId(id)
+
+        const [comments, countComments] = await Promise.all([commentsPromise, countCommentsPromise])
 
 
         return NextResponse.json({

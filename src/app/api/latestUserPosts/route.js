@@ -19,8 +19,10 @@ export const GET = async (request) => {
         }
         const userId = validation.data.id
 
-        const posts = await fetchLatestPostsFromDBById(userId)
-        const countPosts = await fetchCountPostFromDBByUserId(userId)
+        const postsPromise = fetchLatestPostsFromDBById(userId)
+        const countPostsPromise = fetchCountPostFromDBByUserId(userId)
+        const [posts, countPosts] = await Promise.all([postsPromise, countPostsPromise])
+
         const data = [posts, countPosts]
 
         return NextResponse.json({
