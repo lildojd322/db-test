@@ -1,8 +1,9 @@
 export const metadata = {
     title: "Next App",
 
-};
+}
 
+export const dynamic = 'force-static'
 
 const ContactsPage = () => {
     return (

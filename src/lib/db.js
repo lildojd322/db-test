@@ -1,6 +1,8 @@
 import mysql from 'mysql2/promise'
 import { hash } from 'bcryptjs'
 import { cache } from 'react'
+import crypto from 'crypto'
+
 
 
 const dbConfig = {
@@ -147,12 +149,13 @@ export const getUserFromDBById = cache(async (id) => {
 })
 
 export async function forwardUserToDB(email, password, name) {
+    const token = crypto.randomBytes(32).toString('hex')
     const hashedPassword = await hash(password, 10)
     await pool.execute(
-        'INSERT INTO users (email, password, name) VALUES (?, ?, ?)',
-        [email, hashedPassword, name]
+        'INSERT INTO users (email, password, name, emailVerified, verificationToken) VALUES (?, ?, ?, null, ?)',
+        [email, hashedPassword, name, token]
     )
-    return { success: true }
+    return { success: true, token: token }
 }
 
 export async function createGoogleUserInDB({ name, email, image }) {
@@ -178,10 +181,21 @@ export async function deleteUserById(id) {
 }
 
 
+
+export const getUserFromDBByToken = cache(async (token) => {
+    const [rows] = await pool.execute('SELECT * FROM users WHERE verificationToken  = ?', [token])
+    return rows[0]
+})
 //links
 
 export const getLinksFromDB = cache(async () => {
     const [rows] = await pool.execute('SELECT * FROM links')
+    return rows
+})
+
+
+export const updateUserVerificationToken = cache(async (id) => {
+    const [rows] = await pool.execute('UPDATE users SET emailVerified = NOW(),  verificationToken = NULL WHERE id = ?', [id])
     return rows
 })
 
@@ -241,3 +255,4 @@ export async function forwardCommentToDB(comment_text, post_id, user_id, parent_
 export async function deleteCommentById(id) {
     await pool.execute('DELETE FROM comments WHERE comment_id = ?', [id])
 }
+

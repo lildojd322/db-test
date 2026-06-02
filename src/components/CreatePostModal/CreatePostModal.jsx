@@ -9,7 +9,8 @@ import { useSession } from "next-auth/react"
 
 const CreatePostModal = ({ isOpen, changeModalStatus }) => {
     const [error, setError] = useState(false)
-    const router = useRouter();
+    const [isPending, setIsPending] = useState(false)
+    const router = useRouter()
     const session = useSession()
 
     const handleOverlayClick = (e) => {
@@ -37,13 +38,14 @@ const CreatePostModal = ({ isOpen, changeModalStatus }) => {
             return
         }
 
-
+        setIsPending(true)
 
         const response = await fetch('/api/createPost', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(validation.data)
         })
+
 
         if (response.ok) {
             changeModalStatus()
@@ -68,7 +70,7 @@ const CreatePostModal = ({ isOpen, changeModalStatus }) => {
                         placeholder="title"
                         required
                         className={styles.input}
-                        
+
                     />
                     <textarea
                         name="description"
@@ -76,7 +78,7 @@ const CreatePostModal = ({ isOpen, changeModalStatus }) => {
                         required
                         className={styles.textarea}
                     />
-                    <button type="submit" className={styles.submitButton}>
+                    <button disabled={isPending}   type="submit" className={styles.submitButton}>
                         create
                     </button>
                 </form>

@@ -3,7 +3,7 @@ import { z } from "zod"
 export const registerSchema = z.object({
     name: z.string().min(2, "The name must be at least 2 characters long").max(23, "the name must not exceed 23 characters"),
     email: z.string().email("Incorrect email format"),
-    password: z.string().min(6, "Password must be at least 6 characters long").max(25, "the name must not exceed 25 characters"),
+    password: z.string().min(6, "Password must be at least 6 characters long").max(25, "the password must not exceed 25 characters"),
 })
 
 
@@ -15,8 +15,8 @@ export const loginSchema = z.object({
 
 
 export const postSchema = z.object({
-    title: z.string().min(2, "The name must be at least 2 characters long").max(50, 'title is too long'),
-    description: z.string().min(3, "The name must be at least 3 characters long").max(300, 'description is too long ')
+    title: z.string().min(2, "The title must be at least 2 characters long").max(50, 'title is too long'),
+    description: z.string().min(3, "The description must be at least 3 characters long").max(300, 'description is too long ')
 })
 
 export const commentSchema = z.object({

@@ -11,6 +11,7 @@ const CreatePostButton = () => {
     const session = useSession()
     const [loading, setLoading] = useState(true)
     const [isOpen, setIsOpen] = useState(false)
+    const [isPending, setIsPending] = useState(false)
     const router = useRouter()
 
 

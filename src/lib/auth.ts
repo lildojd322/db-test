@@ -16,7 +16,8 @@ export const authConfig: AuthOptions = {
         Credentials({
             credentials: {
                 email: { label: 'email', type: 'email', required: true },
-                password: { label: 'password', type: 'password', required: true }
+                password: { label: 'password', type: 'password', required: true },
+
             },
             async authorize(credentials) {
                 if (!credentials) {
@@ -38,11 +39,25 @@ export const authConfig: AuthOptions = {
                 const limit = checkLimit(key)
 
                 if (!limit.allowed) {
-                      throw new Error('TooManyAttempts')
+                    throw new Error('TooManyAttempts')
                 }
 
 
                 const currentUser = await getUserFromDBByEmail(email)
+
+                if (!currentUser) {
+                    throw new Error("UserNotFound")
+
+                }
+
+             
+
+
+                if (!currentUser.emailVerified) {
+                    throw new Error("EmailNotVerified")
+                }
+
+
 
                 if (currentUser && currentUser.password) {
                     const isPasswordCorrect = await compare(

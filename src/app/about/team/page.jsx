@@ -1,4 +1,8 @@
+export const dynamic = 'force-static'
+
 const Team = () => {
+
+
     return (
         <div>
             blog team

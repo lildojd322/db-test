@@ -1,7 +1,9 @@
 export const metadata = {
     title: "about",
 
-};
+}
+
+export const dynamic = 'force-static'
 
 const About = () => {
     return (

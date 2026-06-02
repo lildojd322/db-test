@@ -5,8 +5,19 @@ import SignInForm from '../../components/SigninForm/SignInForm'
 import { getServerSession } from "next-auth/next"
 import { redirect } from 'next/navigation'
 
-const Signin = async () => {
+
+
+const Signin = async ({ searchParams }) => {
+    const params = await searchParams
+    let verified = params?.verified || ''
+
+    if (!verified) {
+
+    }
+
     const session = await getServerSession(authConfig)
+
+  
 
     if (session) {
         redirect("/profile")
@@ -14,6 +25,11 @@ const Signin = async () => {
 
     return (
         <div className="authorizeContainer">
+            {verified === "true" && (
+                <div style={{ color: "#22c55e", marginBottom: "15px", textAlign: "center", fontWeight: "bold", maxWidth: '300px' }}>
+                    Email successfully confirmed! Now you can sign in with your password.
+                </div>
+            )}
             <GoogleButton />
             <div>
                 <p className="signOr">or sign in with email</p>
