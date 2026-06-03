@@ -30,7 +30,7 @@ const ConfirmEmail = async ({ searchParams }) => {
             )
         }
 
-        const expirationTime = new Date(user.createdAt).getTime() + 60 * 60 * 1000;
+        const expirationTime = new Date(user.createdAt).getTime() + 60 * 60 * 1000
 
         if (Date.now() > expirationTime) {
             await deleteUserById(user.id)

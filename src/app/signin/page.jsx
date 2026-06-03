@@ -11,10 +11,6 @@ const Signin = async ({ searchParams }) => {
     const params = await searchParams
     let verified = params?.verified || ''
 
-    if (!verified) {
-
-    }
-
     const session = await getServerSession(authConfig)
 
   

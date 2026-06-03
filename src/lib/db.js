@@ -186,6 +186,18 @@ export const getUserFromDBByToken = cache(async (token) => {
     const [rows] = await pool.execute('SELECT * FROM users WHERE verificationToken  = ?', [token])
     return rows[0]
 })
+
+export const updateUserVerificationToken = cache(async (id) => {
+    const [rows] = await pool.execute('UPDATE users SET emailVerified = NOW(),  verificationToken = NULL WHERE id = ?', [id])
+    return rows
+})
+
+
+export const deleteExpiredUsers = cache(async () => {
+    await pool.execute('DELETE from users WHERE emailVerified IS NULL AND createdAt < NOW() - INTERVAL 1 HOUR ', [id])
+    return { success: true }
+})
+
 //links
 
 export const getLinksFromDB = cache(async () => {
@@ -194,10 +206,8 @@ export const getLinksFromDB = cache(async () => {
 })
 
 
-export const updateUserVerificationToken = cache(async (id) => {
-    const [rows] = await pool.execute('UPDATE users SET emailVerified = NOW(),  verificationToken = NULL WHERE id = ?', [id])
-    return rows
-})
+
+
 
 //comments
 
