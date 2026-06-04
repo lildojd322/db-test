@@ -3,7 +3,7 @@ import { deleteExpiredUsers } from '../../../../lib/db'
 
 
 
-export async function DELETE(request) {
+export async function GET(request) {
     const { searchParams } = new URL(request.url)
     const secret = searchParams.get('secret')
 
