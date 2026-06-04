@@ -193,10 +193,10 @@ export const updateUserVerificationToken = cache(async (id) => {
 })
 
 
-export const deleteExpiredUsers = cache(async () => {
-    await pool.execute('DELETE from users WHERE emailVerified IS NULL AND createdAt < NOW() - INTERVAL 1 HOUR ', [id])
+export const deleteExpiredUsers = async () => {
+    await pool.execute('DELETE from users WHERE emailVerified IS NULL AND createdAt < NOW() - INTERVAL 1 HOUR ')
     return { success: true }
-})
+}
 
 //links
 
