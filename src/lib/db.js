@@ -158,6 +158,21 @@ export async function forwardUserToDB(email, password, name) {
     return { success: true, token: token }
 }
 
+export async function forwardResetTokenToDB(email) {
+    const resetToken = crypto.randomBytes(32).toString('hex')
+    const result = await pool.execute(
+        'UPDATE users SET resetToken = ?, resetToken_createdAt = NOW() WHERE email = ?',
+        [resetToken, email]
+    )
+
+    if (result.affectedRows === 0) {
+        return { success: false, token: null }
+    }
+
+    return { success: true, token: resetToken }
+}
+
+
 export async function createGoogleUserInDB({ name, email, image }) {
     await pool.execute(
         'INSERT INTO users (name, email, image, password) VALUES (?, ?, ?, NULL)',
@@ -178,6 +193,27 @@ export async function deleteUserById(id) {
         'delete from users where id = ?',
         [id]
     )
+}
+
+
+export const getUserFromDBByResetToken = cache(async (token) => {
+    const [rows] = await pool.execute('SELECT * FROM users WHERE resetToken = ?', [token])
+    return rows[0]
+})
+
+export const deleteResetTokenById = async (id) => {
+    await pool.execute('UPDATE users SET resetToken = NULL, resetToken_createdAt = NULL WHERE id = ?', [id])
+    return { success: true }
+}
+
+
+
+
+
+export const updateUserPassword = async (password, id) => {
+    const hashedPassword = await hash(password, 10)
+    await pool.execute('UPDATE users SET password = ?, resetToken = NULL, resetToken_createdAt = NULL WHERE id = ?', [hashedPassword, id])
+    return { success: true }
 }
 
 

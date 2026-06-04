@@ -13,7 +13,7 @@ const Signin = async ({ searchParams }) => {
 
     const session = await getServerSession(authConfig)
 
-  
+
 
     if (session) {
         redirect("/profile")
@@ -34,6 +34,9 @@ const Signin = async ({ searchParams }) => {
             <div className="authFooter">
                 <p>
                     Don't have an account? <Link href='/register'>Register right now</Link>
+                </p>
+                <p>
+                    <Link href='/reset-password'>forgot your password?</Link>
                 </p>
             </div>
         </div>

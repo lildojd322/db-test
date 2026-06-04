@@ -45,3 +45,17 @@ export const offsetLimitSchema = z.object({
 export const keywordSchema = z.object({
     keyword: z.string().max(100).optional().default("")
 })
+
+export const newPasswordSchema = z.object({
+    password: z
+        .string()
+        .min(6, "Password must be at least 6 characters long")
+        .max(25, "The password must not exceed 25 characters"),
+    repeatPassword: z
+        .string()
+        .min(1, "Please repeat your password")
+})
+    .refine((data) => data.password === data.repeatPassword, {
+        message: "Passwords do not match",
+        path: ["repeatPassword"],
+    })
