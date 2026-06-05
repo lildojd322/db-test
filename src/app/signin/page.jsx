@@ -10,6 +10,7 @@ import { redirect } from 'next/navigation'
 const Signin = async ({ searchParams }) => {
     const params = await searchParams
     let verified = params?.verified || ''
+    let isReset = params?.isReset || ''
 
     const session = await getServerSession(authConfig)
 
@@ -24,6 +25,11 @@ const Signin = async ({ searchParams }) => {
             {verified === "true" && (
                 <div style={{ color: "#22c55e", marginBottom: "15px", textAlign: "center", fontWeight: "bold", maxWidth: '300px' }}>
                     Email successfully confirmed! Now you can sign in with your password.
+                </div>
+            )}
+            {isReset === 'true' && (
+                <div style={{ color: "#22c55e", marginBottom: "15px", textAlign: "center", fontWeight: "bold", maxWidth: '300px' }}>
+                    Your password has been successfully reset! You can now log in with your new password.
                 </div>
             )}
             <GoogleButton />
