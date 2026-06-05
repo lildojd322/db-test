@@ -207,6 +207,15 @@ export const deleteResetTokenById = async (id) => {
 }
 
 
+export async function deleteExpiredResetTokens() {
+    await pool.execute(
+        `UPDATE users 
+         SET resetToken = NULL, resetToken_createdAt = NULL 
+         WHERE resetToken IS NOT NULL 
+           AND resetToken_createdAt < DATE_SUB(NOW(), INTERVAL 1 HOUR)`
+    )
+    return { success: true }
+}
 
 
 
