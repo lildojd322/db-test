@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import { useEffect, useState, useRef } from 'react' 
+import { useEffect, useState, useRef } from 'react'
 import styles from './PostsList.module.scss'
 import { usePostStore } from '../../store/store'
 
@@ -33,7 +33,7 @@ const PostsList = (props) => {
     const currentHasMore = storedPosts.length > 0 ? storedHasMore : (initialPosts.length >= 20)
 
     const loadMore = async () => {
-        if (loading || !currentHasMore) return 
+        if (loading || !currentHasMore) return
         setLoading(true)
 
         try {
@@ -77,7 +77,7 @@ const PostsList = (props) => {
         return () => {
             if (observerTarget) observer.unobserve(observerTarget)
         }
-    }, [currentOffset, currentHasMore, loading]) 
+    }, [currentOffset, currentHasMore, loading])
 
     return (
         <>

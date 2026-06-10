@@ -1,6 +1,6 @@
 'use client'
 
-import { use, useEffect, useState } from 'react'
+import { use, useEffect, useState, useOptimistic, startTransition } from 'react'
 import styles from './Comments.module.scss'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
@@ -18,6 +18,45 @@ const Comments = ({ id, author }) => {
     const [countComments, setCountComments] = useState(0)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
+
+    const [optimisticComments, modifyOptimisticComments] = useOptimistic(
+        comments,
+        (currentComments, action) => {
+
+            switch (action.type) {
+                case 'ADD':
+                    const newComment = action.payload
+
+                    if (!newComment.parent_comment_id) {
+                        return [newComment, ...currentComments]
+                    }
+                    const updatedList = [...currentComments]
+
+
+                    const parentIndex = updatedList.findIndex(
+                        c => String(c.comment_id) === String(newComment.parent_comment_id)
+                    )
+
+                    if (parentIndex !== -1) {
+
+                        updatedList.splice(parentIndex + 1, 0, newComment)
+                        return updatedList
+                    }
+
+
+                    return [action.payload, ...currentComments]
+                case 'DELETE':
+                    return currentComments.filter(comment =>
+                        comment.comment_id !== action.payload &&
+                        comment.parent_comment_id !== action.payload
+                    )
+                default:
+                    return currentComments
+            }
+
+        }
+
+    )
 
 
 
@@ -50,31 +89,20 @@ const Comments = ({ id, author }) => {
     }, [id])
 
 
-
-    const handleAction = (event, parentId = '') => {
+    const handleAction = async (event, parentId = '') => {
         event.preventDefault()
-
-
         if (session.status !== "authenticated") {
-
             router.push('/signin')
             return
         }
 
-
-
-
-
         const formData = new FormData(event.currentTarget)
         const data = Object.fromEntries(formData.entries())
-
         data.post_id = String(id)
         data.user_id = String(session?.data?.user?.id || '')
         data.parent_comment_id = parentId ? String(parentId) : null
 
         const validation = commentSchema.safeParse(data)
-
-
         if (!validation.success) {
             const firstError = validation.error.issues[0].message
             setError(firstError)
@@ -82,44 +110,77 @@ const Comments = ({ id, author }) => {
         }
         setError(false)
 
-
-        fetch(`/api/comments/create`, {
-            method: 'POST',
-            body: JSON.stringify(data)
-        }).then(res => res.json())
-            .then(data => {
-                router.refresh()
-                loadComments()
+        const targetForm = event.target
 
 
-                event.target.reset()
+        const parentComment = comments.find(c => String(c.comment_id) === String(parentId))
+
+        const newComment = {
+            comment_id: Math.random(),
+            parent_comment_id: parentId ? String(parentId) : null,
+            post_id: String(id),
+            user_id: String(session?.data?.user?.id || ''),
+            comment_text: data.comment_text,
+            created_at: new Date().toISOString(),
+            isPending: true,
+            author_name: session?.data?.user?.name || 'You',
+            author_avatar: session?.data?.user?.image || defaulImage.src,
+            parent_author_id: parentComment ? parentComment.user_id : null,
+            parent_author_name: parentComment ? parentComment.author_name : null
+        }
+
+        startTransition(() => {
 
 
-                setLoading(false)
+
+            modifyOptimisticComments({ type: 'ADD', payload: newComment },)
+            setCountComments(prev => prev + 1)
+
+        })
+        targetForm.reset()
+
+        try {
+            const res = await fetch(`/api/comments/create`, {
+                method: 'POST',
+                body: JSON.stringify(data)
             })
-            .catch(err => {
-                console.error(err)
-                setLoading(false)
-            })
+            await res.json()
+
+
+
+            await loadComments()
+
+        } catch (err) {
+            setCountComments(prev => prev - 1);
+            await loadComments()
+
+        }
 
     }
 
 
+    const handleDelete = async (id) => {
+        startTransition(async () => {
 
-    const handleDelete = (id) => {
+            modifyOptimisticComments({ type: 'DELETE', payload: id })
+            setCountComments(prev => prev - 1)
+            try {
+                const res = await fetch(`/api/comments/delete?id=${id}`, {
+                    method: 'DELETE',
+                })
+                await res.json()
 
-        fetch(`/api/comments/delete?id=${id}`, {
-            method: 'DELETE',
-        }).then(res => res.json())
-            .then(data => {
                 router.refresh()
-                loadComments()
-                setLoading(false)
-            })
-            .catch(err => {
-                console.error(err)
-                setLoading(false)
-            })
+                await loadComments()
+            } catch (error) {
+                console.error(error)
+                setCountComments(prev => prev + 1)
+
+            }
+
+        })
+
+
     }
 
 
@@ -134,7 +195,7 @@ const Comments = ({ id, author }) => {
                 <ul className={styles.commentsList}>
 
 
-                    {countComments > 0 ? comments.map((comment) => {
+                    {countComments > 0 ? optimisticComments.map((comment) => {
                         return <li style={{ marginLeft: comment.parent_comment_id ? '45px' : '0px' }} key={comment.comment_id}>
                             <div className={styles.justInfoBlock}>
                                 <div className={styles.info}>

@@ -33,10 +33,9 @@ export async function DELETE(request) {
 
         const currentComment = await fetchCommentFromDBById(id)
 
-        if (currentComment.user_id !== session.user.id) {
+        if (String(currentComment.user_id) !== String(session.user.id)) {
             return NextResponse.json({ error: "wrong user" }, { status: 403 })
         }
-
         await deleteCommentById(id)
         return NextResponse.json({
             message: "comments deleted successfully",

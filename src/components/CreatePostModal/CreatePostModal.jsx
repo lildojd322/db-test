@@ -78,7 +78,7 @@ const CreatePostModal = ({ isOpen, changeModalStatus }) => {
                         required
                         className={styles.textarea}
                     />
-                    <button disabled={isPending}   type="submit" className={styles.submitButton}>
+                    <button disabled={isPending} type="submit" className={styles.submitButton}>
                         create
                     </button>
                 </form>
