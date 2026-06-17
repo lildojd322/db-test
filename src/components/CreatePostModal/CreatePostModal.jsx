@@ -6,12 +6,16 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import styles from './CreatePostModal.module.scss'
 import { useSession } from "next-auth/react"
+import { usePostStore } from '../../store/store'
+
 
 const CreatePostModal = ({ isOpen, changeModalStatus }) => {
     const [error, setError] = useState(false)
     const [isPending, setIsPending] = useState(false)
     const router = useRouter()
     const session = useSession()
+    const { reset, deleteOptimisticPost, addOptimisticPost, updateOptimisticPost } = usePostStore()
+
 
     const handleOverlayClick = (e) => {
 
@@ -37,6 +41,16 @@ const CreatePostModal = ({ isOpen, changeModalStatus }) => {
             setError(firstError)
             return
         }
+        const tempPost = {
+            id: Date.now(),
+            title: validation.data.title,
+            description: validation.data.description,
+            created_at: new Date().toISOString(),
+            author_name: session?.data?.user?.name || 'anonymous',
+            userId: session?.data?.user?.id || session?.data?.user?.sub || ''
+
+        }
+        addOptimisticPost(tempPost)
 
         setIsPending(true)
 
@@ -48,11 +62,20 @@ const CreatePostModal = ({ isOpen, changeModalStatus }) => {
 
 
         if (response.ok) {
+            const result = await response.json()
+
+            const realPost = {
+                ...tempPost,
+                id: result.id 
+            }
+            updateOptimisticPost(tempPost.id, realPost)
             changeModalStatus()
             router.refresh()
         } else {
             const result = await response.json()
             setError(result.error || 'failed')
+            deleteOptimisticPost(tempPost.id)
+            setIsPending(false)
         }
     }
 

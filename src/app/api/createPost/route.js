@@ -27,10 +27,11 @@ export const POST = async (request) => {
 
 
 
-        await forwardPostToDB(title, description, userEmail, userName, userId)
+        const result = await forwardPostToDB(title, description, userEmail, userName, userId)
         return NextResponse.json({
             message: "post created successfully",
-            success: true
+            success: true,
+            id: result.id
         }, { status: 201 })
     } catch (error) {
         console.error("API ERROR:", error)

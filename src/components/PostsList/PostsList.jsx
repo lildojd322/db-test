@@ -19,14 +19,13 @@ const PostsList = (props) => {
     const triggerRef = useRef(null)
 
     useEffect(() => {
-        if (keyword !== storedKeyword) {
-            reset()
+        if (keyword !== storedKeyword || storedPosts.length === 0) {
             setKeyword(keyword)
             setPosts(initialPosts)
             setOffset(initialPosts.length)
             setHasMore(initialPosts.length >= 20)
         }
-    }, [initialPosts, keyword])
+    }, [keyword, storedKeyword, initialPosts])
 
     const currentPosts = storedPosts.length > 0 ? storedPosts : initialPosts
     const currentOffset = storedPosts.length > 0 ? storedOffset : initialPosts.length
