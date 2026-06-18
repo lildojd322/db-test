@@ -15,9 +15,9 @@ const UserProfile = ({ user }) => {
 
     if (!user) return <div className={styles.profileWrapper}>Loading...</div>
     useEffect(() => {
-       setLoading(false) 
+        setLoading(false)
     }, [])
-        
+
     const { data: session } = useSession()
     if (lodaing) return <ProfileLoading />
     return (
@@ -29,7 +29,7 @@ const UserProfile = ({ user }) => {
             />
 
             <h1 className={styles.name}>{user.name}</h1>
-
+            <h2 className={styles.userId}> id: {user?.id} </h2>
             <LatestUserPosts id={user.id} name={user.name} />
 
         </div>

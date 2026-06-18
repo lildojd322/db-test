@@ -26,30 +26,39 @@
   margin-bottom: 0.5rem;
 }
 
+
+.userId {
+  font-weight: 400;
+  margin-top: 10px;
+  color: #ababab;
+  font-size: 18px;
+}
+
 .nameLatestTitle {
-  margin-block: 20px ;
+  margin-block: 20px;
 }
 
 @media (max-width: 359px) {
-    .avatar {
-        width: 100px;
-        height: 100px ;
-    }
-    .name {
+  .avatar {
+    width: 100px;
+    height: 100px;
+  }
+
+  .name {
     font-size: 15px;
     margin-bottom: 0;
-}
+  }
 
-.profileWrapper {
- 
-  padding: 1rem 1rem;
+  .profileWrapper {
 
-}
+    padding: 1rem 1rem;
 
-.nameLatestTitle {
-   margin-block: 5px ;
-   font-size: 25px;
-}
+  }
+
+  .nameLatestTitle {
+    margin-block: 5px;
+    font-size: 25px;
+  }
 
 
 

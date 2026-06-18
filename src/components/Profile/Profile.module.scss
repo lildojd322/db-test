@@ -4,14 +4,14 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding:  2rem 1rem;
+    padding: 2rem 1rem;
 }
 
 .userAvatar {
     height: 150px;
     width: 150px;
     border-radius: 50%;
-    
+
 }
 
 .signOutButton {
@@ -49,36 +49,44 @@
     margin-top: 15px;
 }
 
+.userId {
+    font-weight: 400;
+    margin-top: 10px;
+    color:  #ababab;
+    font-size: 18px;
+}
+
 .avatarBlock {
     position: relative;
-   
+
     display: inline-block;
 }
 
 @media (max-width: 359px) {
-.signOutButton {
-    width: 80px;
-  font-size: 10px;
-}
+    .signOutButton {    
+        width: 80px;
+        font-size: 10px;
+    }
 
 
-.profileContainer {
-  
-    padding:  1rem 1rem;
-}
+    .profileContainer {
+
+        padding: 1rem 1rem;
+    }
 
     .userAvatar {
         width: 100px !important;
         height: 100px !important;
     }
+
     .username {
-    font-size: 15px;
-}
+        font-size: 15px;
+    }
 
-.signOutButton {
-    margin-top: 15px;
+    .signOutButton {
+        margin-top: 15px;
 
 
-   
-}
+
+    }
 }
